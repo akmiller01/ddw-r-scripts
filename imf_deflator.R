@@ -16,8 +16,7 @@ weo = read.csv(data_url,sep="\t",na.strings=c("","n/a","--"))
 
 # Set our desired indicators with nice names
 weo$indicator = NA
-weo$indicator[which(weo$Subject.Descriptor== "Gross domestic product, current prices" & weo$Units == "U.S. dollars")] = "current_usd_gdp"
-weo$indicator[which(weo$Subject.Descriptor== "Gross domestic product, constant prices" & weo$Units == "Percent change")] = "gdp_growth"
+weo$indicator[which(weo$Subject.Descriptor== "Gross domestic product, deflator" & weo$Units == "Index")] = "deflator.2009"
 
 # Grab just those indicators and relevant columns
 indicators = subset(weo,!is.na(indicator))
@@ -37,46 +36,15 @@ indicators.l = dcast(indicators.m,WEO.Country.Code+ISO+Country+variable~indicato
 indicators.l$year = as.numeric(substr(indicators.l$variable,2,5))
 indicators.l$variable = NULL
 
-indicators.l$gdp_growth = 1+(indicators.l$gdp_growth/100)
+indicators.l.base = subset(indicators.l,year==base_year)
+setnames(indicators.l.base,"deflator.2009","deflator.base")
+indicators.l.base$year=NULL
 
-calc_base_gdp = function(dt,base_year){
-  results = c()
-  row_len = nrow(dt)
-  for(i in 1:row_len){
-    row = dt[i,]
-    this_year = row$year[[1]]
-    this_gdp = row$current_usd_gdp[[1]]
-    if(this_year<base_year){
-      inter_year_range = subset(dt,year>this_year & year<=base_year)
-      gdp_growths = inter_year_range$gdp_growth
-      gdp_growths_prod = prod(gdp_growths)
-      gdp_constant_base = this_gdp * gdp_growths_prod
-      results = c(results,gdp_constant_base)
-    }
-    if(this_year==base_year){
-      results = c(results,this_gdp)
-    }
-    if(this_year>base_year){
-      inter_year_range = subset(dt,year>base_year & year<=this_year)
-      gdp_growths = inter_year_range$gdp_growth
-      gdp_growths_prod = prod(gdp_growths)
-      gdp_constant_base = this_gdp / gdp_growths_prod
-      results = c(results,gdp_constant_base)
-    }
-  }
-  return(results)
-}
-
-# Reorder by country and year
-indicators.l = indicators.l[order(indicators.l$WEO.Country.Code,indicators.l$year),]
-indicators.l = data.table(indicators.l)
-indicators.l[,constant_usd_gdp:=calc_base_gdp(.SD,base_year),by=.(WEO.Country.Code)]
-
-# # Calculate the deflator index
-indicators.l$deflator = round( (indicators.l$current_usd_gdp/indicators.l$constant_usd_gdp) * 100, 6)
+indicators.l = merge(indicators.l,indicators.l.base,by=c("WEO.Country.Code","ISO","Country"))
+indicators.l$deflator= (indicators.l$deflator.2009/indicators.l$deflator.base)*100
 
 # Drop unnecessary columns, rename, and write csv
 keep = c("WEO.Country.Code","ISO","Country","year","deflator")
-indicators.l = indicators.l[,keep,with=F]
+indicators.l = indicators.l[,keep]
 names(indicators.l) = c("weo_country_code","iso_alpha_3_code","country_name","year","deflator")
 write.csv(indicators.l,"output/usd_deflator_2014_2016_apr.csv",na="",row.names=F)
