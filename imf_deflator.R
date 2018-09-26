@@ -48,7 +48,7 @@ calc_base_gdp = function(dt,base_year){
     this_gdp = row$current_usd_gdp[[1]]
     if(this_year<base_year){
       inter_year_range = subset(dt,year>this_year & year<=base_year)
-      gdp_growths = inter_year_range$gdp_growth
+      gdp_growths = inter_year_range$inflation
       gdp_growths_prod = prod(gdp_growths)
       gdp_constant_base = this_gdp * gdp_growths_prod
       results = c(results,gdp_constant_base)
@@ -58,7 +58,7 @@ calc_base_gdp = function(dt,base_year){
     }
     if(this_year>base_year){
       inter_year_range = subset(dt,year>base_year & year<=this_year)
-      gdp_growths = inter_year_range$gdp_growth
+      gdp_growths = inter_year_range$inflation
       gdp_growths_prod = prod(gdp_growths)
       gdp_constant_base = this_gdp / gdp_growths_prod
       results = c(results,gdp_constant_base)
@@ -70,6 +70,9 @@ calc_base_gdp = function(dt,base_year){
 # Reorder by country and year
 indicators.l = indicators.l[order(indicators.l$WEO.Country.Code,indicators.l$year),]
 indicators.l = data.table(indicators.l)
+indicators.l[,gdp_growth_current:=1+(c(NA,diff(.SD$current_usd_gdp))/.SD$current_usd_gdp),by=.(WEO.Country.Code)]
+indicators.l$inflation = 1+indicators.l$gdp_growth_current-indicators.l$gdp_growth
+indicators.l = subset(indicators.l,!is.na(inflation))
 indicators.l[,constant_usd_gdp:=calc_base_gdp(.SD,base_year),by=.(WEO.Country.Code)]
 
 # # Calculate the deflator index
