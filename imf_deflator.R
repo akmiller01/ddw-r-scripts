@@ -8,7 +8,7 @@ wd = "~/git/ddw-r-scripts"
 setwd(wd)
 
 # Set base_year here
-base_year = 2014
+base_year = 2016
 
 # Load data, removing na strings
 data_url = "https://www.imf.org/external/pubs/ft/weo/2018/01/weodata/WEOApr2018all.xls"
@@ -34,33 +34,46 @@ indicators.m = melt(indicators,id.vars=c("WEO.Country.Code","ISO","Country","ind
 indicators.l = dcast(indicators.m,WEO.Country.Code+ISO+Country+variable~indicator)
 
 # Remove the leading X now that year is no longer a variable name
-indicators.l$year = substr(indicators.l$variable,2,5)
+indicators.l$year = as.numeric(substr(indicators.l$variable,2,5))
 indicators.l$variable = NULL
+
+indicators.l$gdp_growth = 1+(indicators.l$gdp_growth/100)
+
+calc_base_gdp = function(dt,base_year){
+  results = c()
+  row_len = nrow(dt)
+  for(i in 1:row_len){
+    row = dt[i,]
+    this_year = row$year[[1]]
+    this_gdp = row$current_usd_gdp[[1]]
+    if(this_year<base_year){
+      inter_year_range = subset(dt,year>this_year & year<=base_year)
+      gdp_growths = inter_year_range$gdp_growth
+      gdp_growths_prod = prod(gdp_growths)
+      gdp_constant_base = this_gdp * gdp_growths_prod
+      results = c(results,gdp_constant_base)
+    }
+    if(this_year==base_year){
+      results = c(results,this_gdp)
+    }
+    if(this_year>base_year){
+      inter_year_range = subset(dt,year>base_year & year<=this_year)
+      gdp_growths = inter_year_range$gdp_growth
+      gdp_growths_prod = prod(gdp_growths)
+      gdp_constant_base = this_gdp / gdp_growths_prod
+      results = c(results,gdp_constant_base)
+    }
+  }
+  return(results)
+}
 
 # Reorder by country and year
 indicators.l = indicators.l[order(indicators.l$WEO.Country.Code,indicators.l$year),]
-# Now that we're reordered, calculate leading and lagging gdp and growth rates
-# This will allow us to calculate constant_usd_gdp all at once rather than 1 year at a time
-indicators.l = data.table(indicators.l)[
-  ,c("lag.current_usd_gdp","lag.gdp_growth","lead.current_usd_gdp","lead.gdp_growth"):= list(
-    c(NA,current_usd_gdp[-.N])
-    ,c(NA,gdp_growth[-.N])
-    ,c(current_usd_gdp[-1],NA)
-    ,c(gdp_growth[-1],NA) 
-  )
-  ,by=WEO.Country.Code]
+indicators.l = data.table(indicators.l)
+indicators.l[,constant_usd_gdp:=calc_base_gdp(.SD,base_year),by=.(WEO.Country.Code)]
 
-# Start calculating constant gdp
-indicators.l$constant_usd_gdp = NA
-# For cases where the year is less than the base year
-indicators.l$constant_usd_gdp[which(indicators.l$year<base_year)] = indicators.l$lead.current_usd_gdp[which(indicators.l$year<base_year)] / (1 + (indicators.l$lead.gdp_growth[which(indicators.l$year<base_year)]/100))
-# For cases where the year is equal to base year
-indicators.l$constant_usd_gdp[which(indicators.l$year==base_year)] = indicators.l$current_usd_gdp[which(indicators.l$year==base_year)]
-# For cases where the year is greater than the base year
-indicators.l$constant_usd_gdp[which(indicators.l$year>base_year)] = indicators.l$lag.current_usd_gdp[which(indicators.l$year>base_year)] * (1 + (indicators.l$gdp_growth[which(indicators.l$year>base_year)]/100))
-
-# Calculate the deflator index
-indicators.l$deflator = round( (indicators.l$constant_usd_gdp/indicators.l$current_usd_gdp) * 100, 6) 
+# # Calculate the deflator index
+indicators.l$deflator = round( (indicators.l$current_usd_gdp/indicators.l$constant_usd_gdp) * 100, 6)
 
 # Drop unnecessary columns, rename, and write csv
 keep = c("WEO.Country.Code","ISO","Country","year","deflator")
