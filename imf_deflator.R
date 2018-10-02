@@ -42,25 +42,26 @@ indicators.l$gdp_growth = 1+(indicators.l$gdp_growth/100)
 calc_base_gdp = function(dt,base_year){
   results = c()
   row_len = nrow(dt)
+  row.base = subset(dt,year==base_year)
+  current_gdp.base = row.base$current_usd_gdp
   for(i in 1:row_len){
     row = dt[i,]
     this_year = row$year[[1]]
-    this_gdp = row$current_usd_gdp[[1]]
     if(this_year<base_year){
       inter_year_range = subset(dt,year>this_year & year<=base_year)
       gdp_growths = inter_year_range$gdp_growth
       gdp_growths_prod = prod(gdp_growths)
-      gdp_constant_base = this_gdp * gdp_growths_prod
+      gdp_constant_base = current_gdp.base / gdp_growths_prod
       results = c(results,gdp_constant_base)
     }
     if(this_year==base_year){
-      results = c(results,this_gdp)
+      results = c(results,current_gdp.base)
     }
     if(this_year>base_year){
       inter_year_range = subset(dt,year>base_year & year<=this_year)
       gdp_growths = inter_year_range$gdp_growth
       gdp_growths_prod = prod(gdp_growths)
-      gdp_constant_base = this_gdp / gdp_growths_prod
+      gdp_constant_base = current_gdp.base * gdp_growths_prod
       results = c(results,gdp_constant_base)
     }
   }
