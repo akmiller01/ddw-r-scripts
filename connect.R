@@ -32,7 +32,8 @@ ddw <- function(schemaTable){
     table <- split[2]
     schemaTables <- schemaListTables(schema)
     if(table %in% schemaTables){
-      return(dbReadTable(con,table))
+     
+      return(dbReadTable(con,c(schema,table)))
     }else{
       return(data.frame())
     }
@@ -46,7 +47,9 @@ ddw <- function(schemaTable){
   }
 }
 
+
 rm(cred,drv,list.of.packages,new.packages)
 
+
 # dat <- dlTableIfExists(con,"fact.population_total")
-# dbDisconnect(con)
+#bDisconnect(con)

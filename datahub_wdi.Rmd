@@ -1,0 +1,44 @@
+---
+title: "World Bank data manipulation"
+author: "Naphlin Peter Akena"
+date: "20 Sept, 2018"
+output:
+  github_document: default
+  html_document: default
+---
+# Introduction
+
+The following datasets is automatically generated with this process :  
+* *list one
+* *list two
+* Item 1
+* Item 2
+
+
+# Setup
+Generation of world
+```{r setup, include=FALSE}
+list.of.packages <- c("WDI","data.table")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only=T)
+```
+
+
+
+
+# Methods
+
+# Sampled Outputs
+
+This is a **nother** test section
+
+  >This is a `block` quote
+  >$H_0$ This is a `block` quote
+  >$H_a$ This is a `block` quote
+  
+The following will be achieved
+* **This** is one
+    * First item
+    * Second item
+* **This** is another
