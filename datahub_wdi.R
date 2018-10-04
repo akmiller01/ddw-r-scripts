@@ -89,7 +89,7 @@ tables_list[["gdp-pc-usd-current"]] = gdp_pc_usd_current
 tables_list[["gdp-pc-usd-2016"]] = gdp_pc_usd_2016
 
 gni_usd_current = dh_wdi("NY.GNP.MKTP.CD")
-gdp_usd_2016 = convert_wb_wdi_series_simple(gni_usd_current,2016,2)
+gni_usd_2016 = convert_wb_wdi_series_simple(gni_usd_current,2016,2)
 
 tables_list[["gni-usd-current"]] = gni_usd_current
 tables_list[["gni-usd-2016"]] = gni_usd_2016
