@@ -19,7 +19,9 @@ source("connect.R")
 
 # Pull in id mappings and deflators. Performing merges to append di_id to the deflator
 wdi_id_map = ddw("dimension.wb_wdi_country_to_di_id_map")
-deflator = ddw("dimension.imf_weo_usd_deflator_2014_2016_apr_pivoted")
+deflator = read.csv("output/usd_deflator_2014_2016_apr.csv")
+deflator$iso_alpha_3_code = NULL
+deflator$country_name = NULL
 setnames(deflator,"weo_country_code","imf_weo_country_code")
 imf_wdi_map = ddw("dimension.wb_wdi_country_to_imf_weo_country_map")
 
@@ -65,42 +67,49 @@ dh_combine = function(frame_list){
 }
 
 # Example usage
-pop_total = dh_wdi("SP.POP.TOTL")
-pop_total$wb_wdi_country_code = NULL
-pop_male = dh_wdi("SP.POP.TOTL.MA.IN")
-pop_male$wb_wdi_country_code = NULL
-pop_total_and_male = dh_combine(
-  list(
-    "pop_total"=pop_total,
-    "pop_male"=pop_male
-    )
-)
+# pop_total = dh_wdi("SP.POP.TOTL")
+# pop_total$wb_wdi_country_code = NULL
+# pop_male = dh_wdi("SP.POP.TOTL.MA.IN")
+# pop_male$wb_wdi_country_code = NULL
+# pop_total_and_male = dh_combine(
+#   list(
+#     "pop_total"=pop_total,
+#     "pop_male"=pop_male
+#     )
+# )
 
 tables_list = list()
 
 # https://github.com/devinit/ddh_donata_scripts/blob/master/data_etl/dh/fact_wb/CREATE_TABLE_gdp_pc_usd_current.sql
 gdp_pc_usd_current = dh_wdi("NY.GDP.PCAP.CD")
-gdp_pc_usd_2015 = convert_wb_wdi_series_simple(gdp_pc_usd_current,2015,2)
+gdp_pc_usd_2016 = convert_wb_wdi_series_simple(gdp_pc_usd_current,2016,2)
 gdp_pc_usd_current$wb_wdi_country_code = NULL
 
 tables_list[["gdp-pc-usd-current"]] = gdp_pc_usd_current
-tables_list[["gdp-pc-usd-2015"]] = gdp_pc_usd_2015
+tables_list[["gdp-pc-usd-2016"]] = gdp_pc_usd_2016
+
+gni_usd_current = dh_wdi("NY.GNP.MKTP.CD")
+gdp_usd_2016 = convert_wb_wdi_series_simple(gni_usd_current,2016,2)
+
+tables_list[["gni-usd-current"]] = gni_usd_current
+tables_list[["gni-usd-2016"]] = gni_usd_2016
+
 
 # https://github.com/devinit/ddh_donata_scripts/blob/master/data_etl/dh/fact_wb/CREATE_TABLE_gdp_usd_current.sql
-series = dbReadTable(con,c("public","individual_wb_wdi_series_in_di_dh"))
-for(i in 1:nrow(series)){
-  serie = series[i,]
-  message(serie$di_dh_series_id)
-  dat = dh_wdi(serie$wb_wdi_series_code)
-  if(grepl("current",serie$wb_wdi_indicator_name,ignore.case=T)){
-    constant_name = gsub("current","2015",serie$di_dh_series_id)
-    message(constant_name)
-    dat_constant = convert_wb_wdi_series_simple(dat,2015,2)
-    tables_list[[constant_name]] = dat_constant
-  }
-  dat$wb_wdi_country_code = NULL
-  tables_list[[serie$di_dh_series_id]] = dat
-}
+# series = dbReadTable(con,c("public","individual_wb_wdi_series_in_di_dh"))
+# for(i in 1:nrow(series)){
+#   serie = series[i,]
+#   message(serie$di_dh_series_id)
+#   dat = dh_wdi(serie$wb_wdi_series_code)
+#   if(grepl("current",serie$wb_wdi_indicator_name,ignore.case=T)){
+#     constant_name = gsub("current","2016",serie$di_dh_series_id)
+#     message(constant_name)
+#     dat_constant = convert_wb_wdi_series_simple(dat,2016,2)
+#     tables_list[[constant_name]] = dat_constant
+#   }
+#   dat$wb_wdi_country_code = NULL
+#   tables_list[[serie$di_dh_series_id]] = dat
+# }
 
 setwd(paste0(wd,"/output"))
 table_names = names(tables_list)
