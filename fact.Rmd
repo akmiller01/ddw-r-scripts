@@ -1,0 +1,57 @@
+---
+title: "Fact Documentation"
+author: "Naphlin Peter Akena"
+date: "10/23/2018"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Background
+
+The DDH fact schema is composed mainly of oecd datasets. To create the fact schema, we will be working with crs, dac1,dac2a,dac2b and dac5 datasets from oecd, the field descriptions can be found on official oecd website can be found on the 
+
+## oda dataset
+
+#### Assumptions
+
++ Mapping table between oecd donors codes and DI donor codes is up to date (*dimension.oecd_donor_to_di_id_map*)
++ Mapping table between oecd recipient codes and DI recipient codes is up to date (*dimension.oecd_recipient_to_di_id_map*)
++ Mapping table betwween oecd crs sector codes and DI sector codes is up to date 
+(*oecd_crs_sector_code_3_digit_to_itep_sector_web_id_map*)
++ Mapping between CRS bundle codes and DI ITEP channel codes should be upto date
+(*oecd_crs_channel_code_5_digit_to_itep_channel_web_id_map and crs_channel_code_5_digit_to_di_itep_channel_map*)
++ The DI bundle codes must be upto date
+
+To generate oda dataset, we will extract the fields belowfrom CRS data, most of the fields are self explanatory except a few
+
+(year, donor_code, recipient_code, flow_code, category, finance_type, aid_type, usd_disbursement, short_description, purpose_code, sector_code, channel_code, long_description, ftc, pba)
+
+### Important Notes
+Of importance in filtering crs data are
+
+1. category
+  
+  Category indicates type of flow eg. ODA, Private flows etc. In our case, we are only     looking for offical flows (ODA). The code for this is 10
+
+2. flow_code
+  
+  Only 3 flows will be considered the filtering 
+  
+  flow_code |flow_name                                |
+  ----------|-----------------------------------------|
+  19        |Equity Investment                        |
+  13        |ODA Loans                                |
+  11        |ODA Grants                               |
+
+3. donor_code 
+
+-----This needs input from duncan, so many fields being used to determine donor code
+
+
+
+## Including Plots
+
+You can also embed plots, for example:
