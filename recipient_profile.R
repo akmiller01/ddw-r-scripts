@@ -3,7 +3,7 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
 
-wd='/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts'
+wd='C:/git/ddw-r-scripts'
 setwd(wd)
 #This file can only be processed after fact table has been processed successfully
 source("baseYearConstants.R")
@@ -22,9 +22,11 @@ source("connect.R")
 #For now this file will be pulled from db but it should be in working directory ideally
 
 #oda <- ddw('fact.oda')
+##write.csv(oda,"output/fact.oda.csv",na="",row.names=F)
 #oda_constant <- ddw('fact.oda_constant')
-oda <- read.csv('output/fact.oda.csv') %>% data.table
-oda_constant <- read.csv('output/fact.oda_constant.csv') %>% data.table
+##write.csv(oda_constant,"output/fact.oda_constant.csv",na="",row.names=F)
+oda <- read.csv('output/fact.oda.csv',na.strings="") %>% data.table
+oda_constant <- read.csv('output/fact.oda_constant.csv',na.strings="") %>% data.table
 
 # -- 1
 get_oda_per_captita <- function(isConstantYearCalculation,excludingNonTransfer){
