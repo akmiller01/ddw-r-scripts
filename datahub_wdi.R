@@ -96,20 +96,20 @@ tables_list[["gni-usd-2016"]] = gni_usd_2016
 
 
 # https://github.com/devinit/ddh_donata_scripts/blob/master/data_etl/dh/fact_wb/CREATE_TABLE_gdp_usd_current.sql
-# series = dbReadTable(con,c("public","individual_wb_wdi_series_in_di_dh"))
-# for(i in 1:nrow(series)){
-#   serie = series[i,]
-#   message(serie$di_dh_series_id)
-#   dat = dh_wdi(serie$wb_wdi_series_code)
-#   if(grepl("current",serie$wb_wdi_indicator_name,ignore.case=T)){
-#     constant_name = gsub("current","2016",serie$di_dh_series_id)
-#     message(constant_name)
-#     dat_constant = convert_wb_wdi_series_simple(dat,2016,2)
-#     tables_list[[constant_name]] = dat_constant
-#   }
-#   dat$wb_wdi_country_code = NULL
-#   tables_list[[serie$di_dh_series_id]] = dat
-# }
+series = dbReadTable(con,c("public","individual_wb_wdi_series_in_di_dh"))
+for(i in 1:nrow(series)){
+  serie = series[i,]
+  message(serie$di_dh_series_id)
+  dat = dh_wdi(serie$wb_wdi_series_code)
+  if(grepl("current",serie$wb_wdi_indicator_name,ignore.case=T)){
+    constant_name = gsub("current","2016",serie$di_dh_series_id)
+    message(constant_name)
+    dat_constant = convert_wb_wdi_series_simple(dat,2016,2)
+    tables_list[[constant_name]] = dat_constant
+  }
+  dat$wb_wdi_country_code = NULL
+  tables_list[[serie$di_dh_series_id]] = dat
+}
 
 setwd(paste0(wd,"/output"))
 table_names = names(tables_list)
