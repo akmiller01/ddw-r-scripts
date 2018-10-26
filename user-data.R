@@ -8,22 +8,23 @@ source("connect.R")
 
 wd <- "~/git/digital-platform/user-data/"
 setwd(wd)
-refPath <- "https://raw.githubusercontent.com/devinit/digital-platform/master/reference/"
-refMap <- list("data_series.domestic"="di_budget_type,di_domestic_budget_level,di_currency")
-refMap <- c(refMap,"data_series.domestic-sectors"="di_budget_type,di_domestic_budget_level,di_currency")
-refMap <- c(refMap,"data_series.domestic-netlending"="di_budget_type,di_domestic_budget_level,di_currency")
-refMap <- c(refMap,"data_series.intl-flows-donors"="di_flow_type,di_flow_name")
-refMap <- c(refMap,"data_series.intl-flows-recipients"="di_flow_type,di_flow_name")
-refMap <- c(refMap,"data_series.intl-flows-donors-wide"="di_flow_type,di_flow_name")
-refMap <- c(refMap,"data_series.intl-flows-recipients-wide"="di_flow_type,di_flow_name")
-refMap <- c(refMap,"data_series.largest-intl-flow"="di_largest_intl_flow")
-refMap <- c(refMap,"data_series.fragile-states"="di_fragile_state")
-refMap <- c(refMap,"data_series.long-term-debt"="di_destination_institution_type,di_financing_type")
-refMap <- c(refMap,"data_series.oda"="di_sector,di_oof_bundle,di_channel")
-refMap <- c(refMap,"data_series.oof"="di_sector,di_oof_bundle,di_channel")
-refMap <- c(refMap,"data_series.fdi-out"="di_financing_type")
-refMap <- c(refMap,"data_series.dfis-out-dev"="di_financing_type")
-refMap <- c(refMap,"data_series.ssc-out"="di_financing_type")
+refMap <- list(
+  "data_series.domestic"=list("reference.di_budget_type","reference.di_domestic_budget_level","reference.di_currency","dimension.domestic_metadata"),
+  "data_series.domestic-sectors"=list("reference.di_budget_type","reference.di_domestic_budget_level","reference.di_currency","dimension.domestic_metadata"),
+  "data_series.domestic-netlending"=list("reference.di_budget_type","reference.di_domestic_budget_level","reference.di_currency","dimension.domestic_metadata"),
+  "data_series.intl-flows-donors"=list("reference.di_flow_type","reference.di_flow_name"),
+  "data_series.intl-flows-recipients"=list("reference.di_flow_type","reference.di_flow_name"),
+  "data_series.intl-flows-donors-wide"=list("reference.di_flow_type","reference.di_flow_name"),
+  "data_series.intl-flows-recipients-wide"=list("reference.di_flow_type","reference.di_flow_name"),
+  "data_series.largest-intl-flow"=list("reference.di_largest_intl_flow"),
+  "data_series.fragile-states"=list("reference.di_fragile_state"),
+  "data_series.long-term-debt"=list("reference.di_destination_institution_type","reference.di_financing_type"),
+  "data_series.oda"=list("reference.di_sector","reference.di_oof_bundle","reference.di_channel"),
+  "data_series.oof"=list("reference.di_sector","reference.di_oof_bundle","reference.di_channel"),
+  "data_series.fdi-out"=list("reference.di_financing_type"),
+  "data_series.dfis-out-dev"=list("reference.di_financing_type"),
+  "data_series.ssc-out"=list("reference.di_financing_type")
+)
 
 #Delete everything in user-data
 unlink(dir(wd, full.names = TRUE),recursive=TRUE)
@@ -255,7 +256,7 @@ userDat <- function(data,basename){
     write.csv(all.entities,paste(cwd,"entity.csv",sep="/"),row.names=FALSE,na='') 
   }
   if(basename %in% names(refMap)){
-    refNames = strsplit(refMap[[basename]],",")[[1]]
+    refNames = refMap[[basename]]
     notesList<-c(
       notesList
       ,"The following tabs have been included for reference purposes:"
@@ -263,14 +264,16 @@ userDat <- function(data,basename){
       ,""
     )
     for(j in 1:length(refNames)){
-      refBaseName = refNames[j]
+      refBaseName = refNames[j][[1]]
       #Copy the reference files
-      refData <- ddw(paste0("reference.",refBaseName))
-      if(nrow(refData)>0){
-        write.csv(refData,paste0(cwd,"/",refBaseName,".csv"),row.names=FALSE,na="")
-        addWorksheet(wb,refBaseName)
-        writeData(wb,sheet=refBaseName,refData,colNames=TRUE,rowNames=FALSE) 
-      }
+      try({
+        refData <- ddw(refBaseName)
+        if(nrow(refData)>0){
+          write.csv(refData,paste0(cwd,"/",refBaseName,".csv"),row.names=FALSE,na="")
+          addWorksheet(wb,refBaseName)
+          writeData(wb,sheet=refBaseName,refData,colNames=TRUE,rowNames=FALSE) 
+        }
+      })
     }
   }
   
