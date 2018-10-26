@@ -23,8 +23,8 @@ source("connect.R")
 
 #oda <- ddw('fact.oda')
 #oda_constant <- ddw('fact.oda_constant')
-oda <- read.csv('output/fact.oda.csv') %>% data.table
-oda_constant <- read.csv('output/fact.oda_constant.csv') %>% data.table
+oda <- read.csv('output/fact.oda.csv',na.strings = "") %>% data.table
+oda_constant <- read.csv('output/fact.oda_constant.csv',na.strings = "") %>% data.table
 
 # -- 1
 get_oda_per_captita <- function(isConstantYearCalculation,excludingNonTransfer){
@@ -48,7 +48,7 @@ get_oda_per_captita <- function(isConstantYearCalculation,excludingNonTransfer){
     setnames(oda_per_captia,'per_capita_value','value')
     
     of <- if(isConstantYearCalculation) 'oda_per_capita_excl_non_transfer_constant.csv' else 'oda_per_capita_excl_non_transfer.csv'
-    write.csv(oda_per_captia,row.names = F,file=paste0(wd,'/output/','recipient_profile.',of))
+    write.csv(oda_per_captia,row.names = F,na = "",file=paste0(wd,'/output/','recipient_profile.',of))
     
   }else{
   
@@ -65,7 +65,7 @@ get_oda_per_captita <- function(isConstantYearCalculation,excludingNonTransfer){
     setnames(oda_per_captia,'per_capita_value','value')
     
     of <- if(isConstantYearCalculation) 'oda_per_capita_constant.csv' else 'oda_per_capita.csv'
-    write.csv(oda_per_captia,row.names = F,file=paste0(wd,'/output/','recipient_profile.',of))
+    write.csv(oda_per_captia,row.names = F,na = "",file=paste0(wd,'/output/','recipient_profile.',of))
   
   }
   
@@ -90,7 +90,7 @@ get_oda_per_percent_gdp <- function(excludingNonTransfer){
   setnames(per_percent_gdp,'per_capita_value','value')
   
   of <- if(excludingNonTransfer)  'oda_per_percent_gdp_excluding_non_transfer.csv' else 'oda_per_percent_gdp.csv'
-  write.csv(per_percent_gdp,row.names = F,file=paste0(wd,'/output/','recipient_profile.',of))
+  write.csv(per_percent_gdp,row.names = F,na = "",file=paste0(wd,'/output/','recipient_profile.',of))
 }
 
 
@@ -114,7 +114,7 @@ get_oda_per_poor_people <- function(isConstantYearCalculation,excludingNonTransf
     setnames(oda_per_poor_people,'per_pp_value','value')
     
     of <- if(isConstantYearCalculation)  'oda_per_poor_people_constant.csv' else 'oda_per_poor_people_constant.csv'
-    write.csv(oda_per_poor_people,row.names = F,file=paste0(wd,'/output/','recipient_profile.',of))
+    write.csv(oda_per_poor_people,row.names = F,na = "",file=paste0(wd,'/output/','recipient_profile.',of))
   
   }else{
     #Calculate values with non-transfers removed
@@ -131,7 +131,7 @@ get_oda_per_poor_people <- function(isConstantYearCalculation,excludingNonTransf
     setnames(oda_per_poor_people,'per_pp_value','value')
     
     of <- if(isConstantYearCalculation)  'oda_per_poor_people_constant_excl_non_tranfer.csv' else 'oda_per_poor_people_constant_excl_non_tranfer.csv'
-    write.csv(oda_per_poor_people,row.names = F,file=paste0(wd,'/output/','recipient_profile.',of))
+    write.csv(oda_per_poor_people,row.names = F,na = "",file=paste0(wd,'/output/','recipient_profile.',of))
   }
 
 }
