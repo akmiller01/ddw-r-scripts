@@ -60,77 +60,110 @@ flow_code_v <- c(13,19)
 oda_filter$oda_donor_bundle[which(oda_filter$flow_code %in%  flow_code_v 
                             & oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'A'
 
-# Bundle Code B
+# Bundle G
 ignore_bundle_code <- append(ignore_bundle_code,'A')
+aid_type_v <- 'D%'
+ftc_v <- 1
+
+oda_filter$oda_donor_bundle[which((oda_filter$aid_type %like%  aid_type_v |
+  oda_filter$ftc ==  ftc_v) & oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'G'
+
+
+
+# Bundle Code B
+ignore_bundle_code <- append(ignore_bundle_code,'G')
 aid_type_v <- c('A01','A02')
+oda_filter$oda_donor_bundle[which(oda_filter$aid_type %in%  aid_type_v  & 
+                                    oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
+
+# Bundle Code C
+ignore_bundle_code <- append(ignore_bundle_code,'B')
+purpose_code_v <- c(52010,53030,53040,72040)
+
+oda_filter$oda_donor_bundle[which(oda_filter$purpose_code %in%  purpose_code_v &
+                                    oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'C'
+
+  
+  # Bundle Code B
+ignore_bundle_code <- append(ignore_bundle_code,'C')
+# Check for aid type and recipient code
+aid_type_v <- c('B01','B03','B04')
+oda_filter$oda_donor_bundle[which(oda_filter$aid_type %in%  aid_type_v & oda_filter$recipient_code != 9998 & 
+                                    oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
+
+# Bundle Code D
+# aid type B01 or B03 or B04 and recipient code 998
+aid_type_v <- c('B01','B03','B04')
+
+oda_filter$oda_donor_bundle[which(oda_filter$recipient_code == 9998 & 
+                                    oda_filter$aid_type %in% aid_type_v & 
+                                    oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'D'
+
+# Bundle Code B
+ignore_bundle_code <- append(ignore_bundle_code,'D')
 purpose_code_v <- 51010
-donor_code_v <- c(901,905,906,907,909,912,913,914,915,916,921,951,953,958,976,990,1013)
 pba_v <- 1
 # also check for combination of aid_type and recipient code 
 # aid_type B01 or B03 or Bo4 and !recipient code 998
 
 #channel channel code to character and check if
 channel_code_g <- '3%'
+
+
+#Check for aid type,purpose_code,donor_code,pba,short_description and long_description
+oda_filter$oda_donor_bundle[which(( oda_filter$purpose_code ==  purpose_code_v |
+                                    oda_filter$pba ==  pba_v |
+                                    as.character(oda_filter$channel_code) %like%  channel_code_g) & 
+                                    oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
+
+
+# Bundle code D
+channel_code_g <- '51%'
+
+#Check for channel code
+oda_filter$oda_donor_bundle[which(as.character(oda_filter$channel_code) %like%  channel_code_g & 
+                                    oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'D'
+
+# Bundle Code B
+
+donor_code_v <- c(901,905,906,907,909,912,913,914,915,916,921,951,953,958,976,990,1013)
 short_description_g <- c('%finance%','%fund%','%subsidy%')
 long_description_g <- c('%finance%','%fund%','%subsidy%','% SWAP %')
 
-#Check for aid type,purpose_code,donor_code,pba,short_description and long_description
-oda_filter$oda_donor_bundle[which((oda_filter$aid_type %in%  aid_type_v |
-                                    oda_filter$purpose_code ==  purpose_code_v |
-                                    oda_filter$pba ==  pba_v |
-                                    as.character(oda_filter$channel_code) %like%  channel_code_g |
-                                    oda_filter$long_description %like any%  long_description_g |
-                                    oda_filter$short_description %like any%  short_description_g) & 
+oda_filter$oda_donor_bundle[which(oda_filter$donor_code %in%  donor_code_v & oda_filter$usd_disbursement >= 1 & 
                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
 
-oda_filter$oda_donor_bundle[which(oda_filter$donor_code %in%  donor_code_v & oda_filter$usd_disbursement >= 1)] <- 'B'
-
-# Check for aid type and recipient code
-aid_type_v <- c('B01','B03','B04')
-oda_filter$oda_donor_bundle[which(oda_filter$aid_type %in%  aid_type_v & oda_filter$recipient_code != 9998 &  oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
-  
-
-# Bundle Code C
-purpose_code_v <- c(52010,53030,53040,72040)
-short_description_g <- c('%vaccin%','%non-food%')
-long_description_g <- c('%vaccin%','%non-food%')
-
-# Check for purpose code, short_description and long_description
-oda_filter$oda_donor_bundle[which(oda_filter$purpose_code %in%  purpose_code_v |
-                                    oda_filter$long_description %like any%  long_description_g |
-                                  oda_filter$short_description %like any%  short_description_g)] <- 'C'
-
+oda_filter$oda_donor_bundle[which((   oda_filter$long_description %like any%  long_description_g |
+                                        oda_filter$short_description %like any%  short_description_g) & 
+                                    oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
 
 # Bundle Code D
-channel_code_g <- '51%'
 long_description_g <- '%research%'
 # grep %research% and recipient code 998
-# aid type B01 or B03 or B04 and recipient code 998
-aid_type_v <- c('B01','B03','B04')
-# aid
 
-#Check for channel code
-oda_filter$oda_donor_bundle[which(as.character(oda_filter$channel_code) %like%  channel_code_g)] <- 'D'
-
-oda_filter$oda_donor_bundle[which(oda_filter$long_description %like any%  long_description_g & oda_filter$recipient_code == 9998)] <- 'D'
-oda_filter$oda_donor_bundle[which(oda_filter$recipient_code == 9998 & oda_filter$aid_type %in% aid_type_v)] <- 'D'
+oda_filter$oda_donor_bundle[which(oda_filter$long_description %like any%  long_description_g & oda_filter$recipient_code == 9998 & 
+                                    oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'D'
 
 # Bundle G
-aid_type_v <- 'D%'
-ftc_v <- 1
 short_description_g <- c('%consultancy%','%consultant%','%technical assistance%','%technical cooperation%','%training%')
 long_description_g <- c('%consultancy%','%consultant%','%technical assistance%','%technical cooperation%','%training%')
 
 #Search for the occurrences of short_description and long_description
-oda_filter$oda_donor_bundle[which(oda_filter$long_description %like any%  long_description_g |
-                                    oda_filter$short_description %like any%  short_description_g |
-                                    oda_filter$aid_type %like%  aid_type_v |
-                                    oda_filter$ftc ==  ftc_v)] <- 'G'
+oda_filter$oda_donor_bundle[which((oda_filter$long_description %like any%  long_description_g |
+                                    oda_filter$short_description %like any%  short_description_g ) & oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'G'
+
+# Bundle Code C
+
+short_description_g <- c('%vaccin%','%non-food%')
+long_description_g <- c('%vaccin%','%non-food%')
+
+# Check for purpose code, short_description and long_description
+oda_filter$oda_donor_bundle[which((
+                                    oda_filter$long_description %like any%  long_description_g |
+                                  oda_filter$short_description %like any%  short_description_g) & oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'C'
+
 
 
 
 oda_filter[,.('Number of Rows'=.N),by='oda_donor_bundle']
-
-
-
 

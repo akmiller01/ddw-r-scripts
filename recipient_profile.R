@@ -3,6 +3,8 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
 
+options(scipen = 999)
+
 wd='/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts'
 setwd(wd)
 #This file can only be processed after fact table has been processed successfully
@@ -23,8 +25,10 @@ source("connect.R")
 
 #oda <- ddw('fact.oda')
 #oda_constant <- ddw('fact.oda_constant')
-oda <- read.csv('output/fact.oda.csv',na.strings = "") %>% data.table
-oda_constant <- read.csv('output/fact.oda_constant.csv',na.strings = "") %>% data.table
+oda <- read.csv('output/fact.oda.csv',na.strings = "") #%>% data.table
+oda_constant <- read.csv('output/fact.oda_constant.csv',na.strings = "") #%>% data.table
+
+'%!in%' <- function(x,y)!('%in%'(x,y))
 
 # -- 1
 get_oda_per_captita <- function(isConstantYearCalculation,excludingNonTransfer){
@@ -33,18 +37,17 @@ get_oda_per_captita <- function(isConstantYearCalculation,excludingNonTransfer){
   
   if(excludingNonTransfer){
     
-    oda_sum <- if(isConstantYearCalculation) oda_constant[,.(value=sum(value),bundle),by=c('to_di_id','year')] else oda[,.(value=sum(value),bundle),by=c('to_di_id','year')]
+    oda_sum <- if(isConstantYearCalculation) oda_constant[which(oda_constant$bundle %!in% c('non-transfer')),] else oda[which(oda$bundle %!in% c('non-transfer')),]
+    oda_sum <- aggregate(oda_sum$value,by=list(di_id=oda_sum$to_di_id,year=oda_sum$year),FUN=sum)
+    setnames(oda_sum,'x','total_oda')
     
-    #get sum of oda to each country
-    oda_sum <- oda_sum[bundle != 'non_transfer',.(value=sum(value)),by=c('to_di_id','year')]
-    setnames(oda_sum,c('to_di_id','value'),c('di_id','total_oda'))
     #merge the sum calculated with population in order  to calculate per capita values
     oda_per_captia <- merge(oda_sum,population_total,by=c('di_id','year'))
     rm(oda_sum,population_total)
     
     oda_per_captia$per_capita_value <- oda_per_captia$total_oda/oda_per_captia$value %>% round(digits=2)
     keep <- c('di_id','year','per_capita_value')
-    oda_per_captia <- oda_per_captia[,..keep]
+    oda_per_captia <- oda_per_captia[,keep]
     setnames(oda_per_captia,'per_capita_value','value')
     
     of <- if(isConstantYearCalculation) 'oda_per_capita_excl_non_transfer_constant.csv' else 'oda_per_capita_excl_non_transfer.csv'
@@ -52,16 +55,16 @@ get_oda_per_captita <- function(isConstantYearCalculation,excludingNonTransfer){
     
   }else{
   
-    oda_sum <- if(isConstantYearCalculation) oda_constant[,.(value=sum(value)),by=c('to_di_id','year')] else oda[,.(value=sum(value)),by=c('to_di_id','year')]
-
-    setnames(oda_sum,c('to_di_id','value'),c('di_id','total_oda'))
+    oda_sum <- if(isConstantYearCalculation) aggregate(oda_constant$value,by=list(di_id=oda_constant$to_di_id,year=oda_constant$year),FUN=sum) else aggregate(oda$value,by=list(di_id=oda$to_di_id,year=oda$year),FUN=sum)
+    setnames(oda_sum,'x','total_oda')
+    
     #merge the sum calculated with population in order  to calculate per capita values
     oda_per_captia <- merge(oda_sum,population_total,by=c('di_id','year'))
     rm(oda_sum,population_total)
     
     oda_per_captia$per_capita_value <- oda_per_captia$total_oda/oda_per_captia$value %>% round(digits=2)
     keep <- c('di_id','year','per_capita_value')
-    oda_per_captia <- oda_per_captia[,..keep]
+    oda_per_captia <- oda_per_captia[,keep]
     setnames(oda_per_captia,'per_capita_value','value')
     
     of <- if(isConstantYearCalculation) 'oda_per_capita_constant.csv' else 'oda_per_capita.csv'
@@ -74,19 +77,20 @@ get_oda_per_captita <- function(isConstantYearCalculation,excludingNonTransfer){
 # --2
 get_oda_per_percent_gdp <- function(excludingNonTransfer){
   
-  gdp_usd_current <- ddw('fact.gdp_usd_current')  %>% data.table
+  gdp_usd_current <- ddw('fact.gdp_usd_current')  #%>% data.table
   
   
   #get sum of oda to each country
-  per_percent_gdp <- if(excludingNonTransfer) oda[bundle != 'non-transfer',.(value=sum(value)),by=c('to_di_id','year')] else oda[,.(value=sum(value)),by=c('to_di_id','year')]
+  oda_sum <- if(excludingNonTransfer) oda[which(oda$bundle %!in% c('non-transfer')),]
+  per_percent_gdp <- oda_sum <- if(excludingNonTransfer) aggregate(oda_sum$value,by=list(di_id=oda_sum$to_di_id,year=oda_sum$year),FUN=sum) else aggregate(oda$value,by=list(di_id=oda$to_di_id,year=oda$year),FUN=sum)
+  setnames(per_percent_gdp,'x','total_oda')
   
-  setnames(per_percent_gdp,c('to_di_id','value'),c('di_id','total_oda'))
   #merge the sum calculated with population in order  to calculate per capita values
   per_percent_gdp <- merge(per_percent_gdp,gdp_usd_current,by=c('di_id','year'))
   
   per_percent_gdp$per_capita_value <- per_percent_gdp$total_oda/per_percent_gdp$value %>% round(digits=4)
   keep <- c('di_id','year','per_capita_value')
-  per_percent_gdp <- per_percent_gdp[,..keep]
+  per_percent_gdp <- per_percent_gdp[,keep]
   setnames(per_percent_gdp,'per_capita_value','value')
   
   of <- if(excludingNonTransfer)  'oda_per_percent_gdp_excluding_non_transfer.csv' else 'oda_per_percent_gdp.csv'
@@ -94,46 +98,58 @@ get_oda_per_percent_gdp <- function(excludingNonTransfer){
 }
 
 
+# Bundle Code A
 # -- 3
 get_oda_per_poor_people <- function(isConstantYearCalculation,excludingNonTransfer){
   
-  poor_people_190 <- ddw('data_series.poor_people_190')  %>% data.table
-
-  if(!excludingNonTransfer){
-    #get sum of oda to each country
-    oda_sum <- if(isConstantYearCalculation) oda_constant[,.(value=sum(value),bundle),by=c('to_di_id','year')] else oda[,.(value=sum(value)),by=c('to_di_id','year')]
-    
-    setnames(oda_sum,c('to_di_id','value'),c('di_id','total_oda'))
-    #merge the sum calculated with population in order  to calculate per capita values
-    oda_per_poor_people <- merge(oda_sum,poor_people_190,by=c('di_id','year'))
-    rm(oda_sum,poor_people_190)
-    
-    oda_per_poor_people$per_pp_value <- oda_per_poor_people$total_oda/oda_per_poor_people$value %>% round(digits=4)
-    keep <- c('di_id','year','per_pp_value')
-    oda_per_poor_people <- oda_per_poor_people[,..keep]
-    setnames(oda_per_poor_people,'per_pp_value','value')
-    
-    of <- if(isConstantYearCalculation)  'oda_per_poor_people_constant.csv' else 'oda_per_poor_people_constant.csv'
-    write.csv(oda_per_poor_people,row.names = F,na = "",file=paste0(wd,'/output/','recipient_profile.',of))
+  #poor_people_190 <- ddw('data_series.poor_people_190')  %>% data.table
+  poor_people_190 <- read.csv('output/recipient_profile.pop_in_pov.csv',na.strings = "") #%>% data.table
+  setnames(poor_people_190,"Poorpop.Interp","value")
+  setnames(poor_people_190,"Year","year")
   
-  }else{
-    #Calculate values with non-transfers removed
-    oda_sum <- if(isConstantYearCalculation) oda_constant[bundle != 'non-transfer',.(value=sum(value)),by=c('to_di_id','year')] else oda[bundle != 'non-transfer',.(value=sum(value)),by=c('to_di_id','year')]
+  
+  if(excludingNonTransfer){
     
-    setnames(oda_sum,c('to_di_id','value'),c('di_id','total_oda'))
+    #Calculate values with non-transfers removed
+   
+    oda_sum <- if(isConstantYearCalculation) oda_constant[which(oda_constant$bundle %!in% c('non-transfer')),] else oda[which(oda$bundle %!in% c('non-transfer')),]
+    oda_sum <- aggregate(oda_sum$value,by=list(di_id=oda_sum$to_di_id,year=oda_sum$year),FUN=sum)
+    setnames(oda_sum,'x','total_oda')
+    
     #merge the sum calculated with population in order  to calculate per capita values
     oda_per_poor_people <- merge(oda_sum,poor_people_190,by=c('di_id','year'))
     rm(oda_sum,poor_people_190)
     
     oda_per_poor_people$per_pp_value <- oda_per_poor_people$total_oda/oda_per_poor_people$value %>% round(digits=4)
     keep <- c('di_id','year','per_pp_value')
-    oda_per_poor_people <- oda_per_poor_people[,..keep]
+    oda_per_poor_people <- oda_per_poor_people[,keep]
     setnames(oda_per_poor_people,'per_pp_value','value')
     
-    of <- if(isConstantYearCalculation)  'oda_per_poor_people_constant_excl_non_tranfer.csv' else 'oda_per_poor_people_constant_excl_non_tranfer.csv'
+    of <- if(isConstantYearCalculation)  'oda_per_poor_people_constant_excl_non_tranfer.csv' else 'oda_per_poor_people_excl_non_tranfer.csv'
     write.csv(oda_per_poor_people,row.names = F,na = "",file=paste0(wd,'/output/','recipient_profile.',of))
+    
+    
+  }else{
+    
+    
+    #get sum of oda to each country
+    oda_sum <- if(isConstantYearCalculation) aggregate(oda_constant$value,by=list(di_id=oda_constant$to_di_id,year=oda_constant$year),FUN=sum) else aggregate(oda_constant$value,by=list(di_id=oda_constant$to_di_id,year=oda_constant$year),FUN=sum)
+    setnames(oda_sum,'x','total_oda')
+ 
+    #merge the sum calculated with population in order  to calculate per capita values
+    oda_per_poor_people_int <- merge(oda_sum,poor_people_190,by=c('di_id','year'))
+    rm(oda_sum,poor_people_190)
+    
+    oda_per_poor_people_int$per_pp_value <- oda_per_poor_people_int$total_oda/oda_per_poor_people_int$value %>% round(digits=4)
+    keep <- c('di_id','year','per_pp_value')
+    oda_per_poor_people_int <- oda_per_poor_people_int[,keep]
+    setnames(oda_per_poor_people_int,'per_pp_value','value')
+    
+    of <- if(isConstantYearCalculation)  'oda_per_poor_people_constant.csv' else 'oda_per_poor_people.csv'
+    write.csv(oda_per_poor_people_int,row.names = F,na = "",file=paste0(wd,'/output/','recipient_profile.',of))
+    
   }
-
+  
 }
 
 get_oda_per_captita(T,T)

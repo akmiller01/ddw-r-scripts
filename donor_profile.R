@@ -42,8 +42,8 @@ asia_subregions <- c(10008,10009,10011)
 
 # All this calcualtions is based on DAC2A, data covers all disbursements for mulitlateral and bilaterals
 
-dac2a <- data.table(read.csv("mirrors/dac2a.csv"))
-dac1 <- data.table(read.csv('mirrors/dac1.csv'))
+dac2a <- data.table(read.csv("mirrors/dac2a.csv",na.strings = ""))
+dac1 <- data.table(read.csv('mirrors/dac1.csv',na.strings = ""))
 setnames(dac2a,'Year','year')
 
 dac2a$value <- coalesce(dac2a$value,as.numeric(0L))*10**6
@@ -56,9 +56,9 @@ calculate_bilateral_disbursements <- function(dataType){
   
   #Filter dac2a data and retrieve recipients codes regional recipient codes only eg(Middle East, Total -- Sub Saharan Africa, Total),
   #We only need flows to developing countries, these have part_code 1 to annote the flow
-  dac2a_bilateral_cur <- dac2a[recipient_code %in% recipient_codes & part_code==1 & aid_type_code==240 & data_type==dataType,
-                         .(donor_code,recipient_code,recipient_name,aid_type="bilateral",
-                               value,year)]
+  #  --- Added base year
+  dac2a_bilateral_tmp <- dac2a[recipient_code %in% recipient_codes & part_code==1 & aid_type_code==240 & data_type==dataType & year == base_year,
+                         .(donor_code,recipient_code,recipient_name,aid_type="bilateral",value,year)]
 
   #Get contributions that has been made to Africa sub regions only, the sub_regions are North of Sahara and South of Sahara
   africa_share_dt <- dac2a[recipient_code %in% africa_subregion & part_code==1 & aid_type_code==240 & data_type==dataType & year==base_year,
@@ -86,6 +86,8 @@ calculate_bilateral_disbursements <- function(dataType){
   asia_share <- asia_share_dt[,.(value=sum(value)),by=donor_code]
   asia_share <- merge(asia_share,asia_share_dt,by='donor_code')
   rm(asia_share_dt)
+  
+  
   asia_share <- asia_share[,.(donor_code,impute_from_code=as.numeric(recipients_codes_impute[3]),share=(value.y/value.x)*100,impute_to_code=recipient_code)]
   
   #Get share contributions for the Americas
@@ -105,28 +107,33 @@ calculate_bilateral_disbursements <- function(dataType){
   #Impute from code denotes the region of imputation
   #impute to code denotes the sub region of imputation
   
+  to_impute <- dac2a[recipient_code %in% recipients_codes_impute & part_code==1 & aid_type_code==240 & data_type==dataType & year==base_year,
+                     .(donor_code,recipient_code,recipient_name,
+                       value,year)]
+  setnames(impute_share,"impute_from_code","recipient_code")
+  imputation <- merge(to_impute,impute_share,by=c('donor_code','recipient_code'),all.x = T,allow.cartesian = T)
   
-  imputation <- merge(dac2a[recipient_code %in% recipients_codes_impute & part_code==1 & aid_type_code==240 & data_type==dataType & year==base_year,
-                            .(donor_code,recipient_code,recipient_name,
-                              value,year)],impute_share,by='donor_code',allow.cartesian=T)
-  
-  imputation <- merge(imputation,dac2a_bilateral_cur,by='donor_code',allow.cartesian = T)
+  setnames(dac2a_bilateral_tmp,'recipient_code','impute_to_code')
+  imputation <- merge(imputation,dac2a_bilateral_tmp,by=c('donor_code','impute_to_code'),all.y  = T,allow.cartesian = T)
   
   #Perform the imputation
-  imputation <- imputation[,.(donor_code,impute_to_code,recipient_code=recipient_code.x,aid_type,year=year.x,final_figure=round(value.y+(value.x*(share/100L)),2))]
+  imputation$share_val <- imputation$value.x*(imputation$share/100L)
+  imputation$share_val[which(is.na(imputation$share_val))] <- 0
+  imputation$final_figure <- imputation$value.y +imputation$share_val
   
   #Keep only the necessary columns and that makes for disbursment by region
-  keep <- c("donor_code","recipient_name","aid_type.x","year.x","value")
-  disbursement_by_region_bilateral <- merge(dac2a_bilateral_cur,imputation, 
-                                            by=c('donor_code','recipient_code'),
+  keep <- c("donor_code","recipient_name","aid_type.x","year.y","final_figure")
+  disbursement_by_region_bilateral <- merge(dac2a_bilateral_tmp,imputation, 
+                                            by=c('donor_code','impute_to_code'),
                                             all.x=T)[,..keep]
   
-  setnames(disbursement_by_region_bilateral,c("recipient_name","aid_type.x","year.x"),c("region_name","aid_type","year"))
+  setnames(disbursement_by_region_bilateral,c("recipient_name","aid_type.x","year.y"),c("region_name","aid_type","year"))
   
-  keep <- c("di_id","donor_code","region_name","aid_type","year","value")
+  keep <- c("di_id","donor_code","region_name","aid_type","year","final_figure")
   disbursement_by_region_bilateral <- merge(disbursement_by_region_bilateral,
                                             oecd_donor_to_di_id_map,by='donor_code',
                                             all.x=T)[,..keep]
+  setnames(disbursement_by_region_bilateral,'final_figure','value')
   #Replace names to di standard identifiers
   disbursement_by_region_bilateral$region_name <- disbursement_by_region_bilateral$region_name %>%
   {gsub('Europe, Total','europe',.)} %>%
@@ -158,16 +165,18 @@ calculate_multilateral_disbursements <- function(dataType,disbursement_by_region
   setnames(dac2a_dac1_map,'code','donor_code')
   
   disbursement_brb_with_dac1_name <- merge(disbursement_by_region_bilateral,dac2a_dac1_map,by="donor_code")
-  dac_1_ttl_to_region <- disbursement_brb_with_dac1_name[,.(dac_1_total_to_region=sum(value)),by=c('dac_1_name','year','region_name')]
   
-  dac_1_ttl_to_world <- disbursement_brb_with_dac1_name[,.(dac_1_total_to_world=sum(value)),by=c('dac_1_name')]
+  dac_1_ttl_to_region <- disbursement_brb_with_dac1_name[,.(dac_1_total_to_region=sum(value)),by=c('dac_1_name','region_name','year')]
+
+  dac_1_ttl_to_world <- aggregate(disbursement_brb_with_dac1_name$value,list(dac_1_name=disbursement_brb_with_dac1_name$dac_1_name),FUN="sum")
+  setnames(dac_1_ttl_to_world,'x','dac_1_total_to_world')
+  
   
   dac_1_name_share_to_region <- merge(dac_1_ttl_to_region,dac_1_ttl_to_world,by='dac_1_name')
   dac_1_name_share_to_region$dac_1_share_to_region <- (dac_1_name_share_to_region$dac_1_total_to_region/dac_1_name_share_to_region$dac_1_total_to_world)*100
   
   dac_1_multilateral_cur <- dac1[aid_type_code %in% aid_types & part_code==1 & flows==1120 & amount_type_code==dataType & year==base_year,
-                                  .(donor_code,donor_name,dac_1_name=aid_type_name,
-                                    value,year)]
+                                  .(donor_code,donor_name,dac_1_name=aid_type_name,value,year)]
   
   dac_1_multilateral_cur$dac_1_name <- gsub('^(I\\.B\\.1\\.\\d+{1}\\.\\s+)','',dac_1_multilateral_cur$dac_1_name)
   dac_1_multilateral_cur$dac_1_name <- gsub('\\s+\\(96\\%\\)','',dac_1_multilateral_cur$dac_1_name)
@@ -178,27 +187,36 @@ calculate_multilateral_disbursements <- function(dataType,disbursement_by_region
   
   
   multilateral_imputation <- merge(as.data.frame(dac_1_multilateral_cur),as.data.frame(unique_regions),by=NULL)
-  multilateral_imputation <- as.data.table(multilateral_imputation)
-  multilateral_imputation <- merge(multilateral_imputation,dac_1_name_share_to_region,all.x = T,
+
+  multilateral_imputation <- merge(multilateral_imputation,dac_1_name_share_to_region,
                                    by=c('region_name','dac_1_name'),allow.cartesian = TRUE)
 
-  multilateral_imputation$oda_to_region = multilateral_imputation$value * (multilateral_imputation$dac_1_share_to_region/100)
+  multilateral_imputation$oda_to_region_tmp <- (multilateral_imputation$dac_1_share_to_region/100)
+  multilateral_imputation$oda_to_region <- multilateral_imputation$value *  multilateral_imputation$oda_to_region_tmp
   
   keep <- c('donor_code','donor_name','dac_1_name','year.x','region_name','oda_to_region')
-  multilateral_imputation=multilateral_imputation[,..keep]
+  multilateral_imputation=multilateral_imputation[,keep]
   
   setnames(multilateral_imputation,'year.x','year')
-  multilateral_imputation <-merge(multilateral_imputation,oecd_donor_to_di_id_map,by='donor_code',all.x = T)
+  multilateral_imputation <-merge(multilateral_imputation,oecd_donor_to_di_id_map,by='donor_code',all.x = T,all.y=T)
   multilateral_imputation$aid_type<-'multilateral'
   
-  disbursement_by_region_multilateral <- multilateral_imputation[,.(value=oda_to_region
-                                                                     %>% coalesce(0) %>% sum %>% round(2)),by=c('di_id','region_name','aid_type','year')]
+  multilateral_imputation$oda_to_region <- multilateral_imputation$oda_to_region %>% coalesce(0)
   
+  disbursement_by_region_multilateral <- aggregate(multilateral_imputation$oda_to_region,list(
+    di_id=multilateral_imputation$di_id,
+    region_name=multilateral_imputation$region_name,
+    aid_type=multilateral_imputation$aid_type,
+   year=multilateral_imputation$year),FUN="sum")
+  setnames(disbursement_by_region_multilateral,'x','value')
+  
+  return(disbursement_by_region_multilateral)
 }
 
 calculate_disbursment_by_region <- function(){
   
   disbursement_by_region_bilateral <- calculate_bilateral_disbursements('A')
+  
   disbursement_by_region_multilateral <- calculate_multilateral_disbursements('A',disbursement_by_region_bilateral)
   
   keep <- c("di_id","region_name","aid_type","year","value")
@@ -206,7 +224,7 @@ calculate_disbursment_by_region <- function(){
   disbursments <- rbind(disbursement_by_region_bilateral,disbursement_by_region_multilateral)
   
   write.csv(disbursments,file='output/donor_profile.disbursements_by_region.csv',row.names = F)
-  
+
 }
 
 
