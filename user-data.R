@@ -26,6 +26,10 @@ refMap <- list(
   "data_series.ssc-out"=list("reference.di_financing_type")
 )
 
+excel_trunc = function(str){
+  return(substr(str,1,31))
+}
+
 #Delete everything in user-data
 unlink(dir(wd, full.names = TRUE),recursive=TRUE)
 
@@ -271,7 +275,7 @@ userDat <- function(data,basename){
         if(nrow(refData)>0){
           write.csv(refData,paste0(cwd,"/",refBaseName,".csv"),row.names=FALSE,na="")
           addWorksheet(wb,refBaseName)
-          writeData(wb,sheet=refBaseName,refData,colNames=TRUE,rowNames=FALSE) 
+          writeData(wb,sheet=excel_trunc(refBaseName),refData,colNames=TRUE,rowNames=FALSE) 
         }
       })
     }
