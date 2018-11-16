@@ -1,4 +1,4 @@
-list.of.packages <- c("data.table","readr","dplyr","DescTools")
+list.of.packages <- c("data.table","readr","dplyr","DescTools","stringr")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
@@ -127,15 +127,39 @@ oda_filter$oda_donor_bundle[which(as.character(oda_filter$channel_code) %like%  
 # Bundle Code B
 
 donor_code_v <- c(901,905,906,907,909,912,913,914,915,916,921,951,953,958,976,990,1013)
-short_description_g <- c('%finance%','%fund%','%subsidy%')
-long_description_g <- c('%finance%','%fund%','%subsidy%','% SWAP %')
+short_description_g <- c('%finance%','%fund%','%subsidy%','%financement%','%fonds%','%subsidie%')
+long_description_g <- c('%finance%','%fund%','%subsidy%','%financement%','%fonds%','%subsidie%')
+# finance_desc <- c('%finance%','%financement%')
+# subsidy_desc <- c('%subsidy%','%subsidie%')
+# fund_desc <- c('%fund%','%fonds%')
+swp <- c('% SWAP %')
+
+oda_filter$short_description_l <- str_to_lower(oda_filter$short_description)
+oda_filter$long_description_l <- str_to_lower(oda_filter$long_description)
 
 oda_filter$oda_donor_bundle[which(oda_filter$donor_code %in%  donor_code_v & oda_filter$usd_disbursement >= 1 & 
                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
 
-oda_filter$oda_donor_bundle[which((   oda_filter$long_description %like any%  long_description_g |
-                                        oda_filter$short_description %like any%  short_description_g) & 
+oda_filter$oda_donor_bundle[which(( 
+                                        oda_filter$short_description_l %like any%  short_description_g
+                                        ) &
                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
+
+# oda_filter$oda_donor_bundle[which(oda_filter$short_description_l %like any% finance_desc &
+#                                      oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
+# oda_filter$oda_donor_bundle[which(oda_filter$short_description_l %like any% subsidy_desc &
+#                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
+# oda_filter$oda_donor_bundle[which(oda_filter$short_description_l %like any% fund_desc &
+#                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
+# oda_filter$oda_donor_bundle[which(oda_filter$long_description_l %like any% finance_desc &
+#                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
+# oda_filter$oda_donor_bundle[which(oda_filter$long_description_l %like any% subsidy_desc &
+#                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
+# oda_filter$oda_donor_bundle[which(oda_filter$long_description_l %like any% fund_desc &
+#                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
+# oda_filter$oda_donor_bundle[which(oda_filter$long_description %like any%  swp  &
+#                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
+
 
 # Bundle Code D
 long_description_g <- '%research%'
@@ -163,7 +187,8 @@ oda_filter$oda_donor_bundle[which((
                                   oda_filter$short_description %like any%  short_description_g) & oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'C'
 
 
-
-
 oda_filter[,.('Number of Rows'=.N),by='oda_donor_bundle']
+
+oda_filter$channel_code[which(as.character(oda_filter$channel_code) %like%  channel_code_g
+                              & oda_filter$oda_donor_bundle %!in% ignore_bundle_code)]
 
