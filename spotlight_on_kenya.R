@@ -11,10 +11,11 @@ outputfolder <- "/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scrip
 
 setwd("/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts");
 source("baseYearConstants.R")
-source("connect.R")
+#source("connect.R")
 
-ref_kenya_districts <- ddw('spotlight_on_kenya_2017.ref_kenya_district')
-#ref_kenya_districts <- read.csv('ref_kenya_district.csv')
+setwd(rawfolder)
+#ref_kenya_districts <- ddw('spotlight_on_kenya_2017.ref_kenya_district')
+ref_kenya_districts <- read.csv('ref_kenya_districts.csv')
 
 
 #Total Expenditures

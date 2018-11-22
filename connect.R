@@ -20,9 +20,12 @@ con <- dbConnect(drv
 schemaListTables <- function(schema){
   query <- paste0("SELECT table_name FROM information_schema.tables
   WHERE table_schema='",schema,"'")
-  return(dbGetQuery(con,query)$table_name)
+  return(dbGetQuery(con,query))
 }
 
+randomQuery <- function(query){
+  return(dbGetQuery(con,query));
+}
 # facts <- schemaListTables("fact")
 
 ddw <- function(schemaTable){
