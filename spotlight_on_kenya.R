@@ -8,7 +8,8 @@ library("xlsx")
 
 rawfolder <- "/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts/sok_raw/"
 outputfolder <- "/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts/output_sok/"
-
+sok_folder <- '/Users/boss/Dev_Musings/devinit/spotlight_on_kenya/Naphlin'
+  
 setwd("/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts");
 source("baseYearConstants.R")
 #source("connect.R")
@@ -185,18 +186,20 @@ setwd(outputfolder)
 
 
 #Working on population
+valid_years=c(paste0('X',2010:2015))
+valid_years=append(valid_years,c('X2020','X2025'))
 
-# total_population <- reshape(total_population_m,varying=c(paste0('X',2010:2015)),
-#                             times =  c(paste0('X',2010:2015)),new.row.names = 1:1000,
-#                             v.names = "value",timevar="year",direction="long")
-# 
-# total_population <- total_population[,c('id','year','value')]
-# 
-# total_population$year <- gsub('X','',total_population$year)
-# setnames(total_population,'id','district_id')
-# 
-# write.csv(x = total_population,'kenya_total_pop.csv',na = '',row.names = F)
-# rm(total_population,total_population_m)
+total_population <- reshape(total_population_m,varying=valid_years,
+                            times =  valid_years,new.row.names = 1:1000,
+                            v.names = "value",timevar="year",direction="long")
+
+total_population <- total_population[,c('id','year','value')]
+
+total_population$year <- gsub('X','',total_population$year)
+setnames(total_population,'id','district_id')
+
+write.csv(x = total_population,'kenya_total_pop.csv',na = '',row.names = F)
+rm(total_population,total_population_m)
 
 #This is the lazy way, the map file has all the column names so this could be automated
 
@@ -215,4 +218,62 @@ for(i in 1:dim(mapdetails)[1]){
   tmp_value$year <- 2016
   write.csv(x = tmp_value,paste0('kenya_',indicator_,'.csv'),na = '',row.names = F)
 }
+
+
+## Work on finance file
+options(scipen=999)
+setwd(sok_folder)
+local_revenue <- read.csv('locally_generated_revenue.csv',na.strings = '')
+
+local_revenue <- merge(local_revenue,ref_kenya_districts, by.x= 'county',by.y = 'name',all.x = T)
+keep<- c('id','year','value')
+local_revenue <- local_revenue[,keep]
+
+setwd(sok_folder)
+#Equitable revenue
+equitable <- read.csv('equitable_share_revenue.csv',na.strings = '')
+
+equitable <-  merge(equitable,ref_kenya_districts, by.x= 'county',by.y = 'name',all.x = T)
+equitable <- equitable[,keep]
+
+#Condititional Revenue revenue
+conditional_revenue <- read.csv('conditional_revenue.csv',na.strings = '')
+
+conditional_revenue <- merge(conditional_revenue,ref_kenya_districts,by.x='X...county',by.y='name',all.x =T)
+conditional_revenue <- conditional_revenue[,keep]
+
+finance <- merge(equitable,conditional_revenue,by=c('id','year'))
+setnames(finance,c('value.x','value.y'),c('equitable','conditional'))  
+finance <- merge(finance,local_revenue,by=c('id','year'))
+finance$total_revenue <- finance$equitable +finance$conditional +finance$value
+
+
+#Load donor funds and merge with revenue data to get percentage of revenue
+donor_contribution <- read.csv('donations_to_county.csv',na.strings = '')
+donor_contribution <- merge(donor_contribution,ref_kenya_districts,by.x='X...county',by.y='name',all.x =T)
+donor_contribution <- donor_contribution[,keep]
+
+
+finance <- merge(finance,donor_contribution,by=c('id','year'),all.x = T)
+
+finance$donor_percent <- (finance$value.y/finance$total_revenue)*100
+donor_percent <- finance[which(!is.na(finance$donor_percent)),c('id','year','donor_percent')]
+
+setwd(outputfolder)
+donor_percent$budget_type <- 'actual'
+write.csv(x=donor_percent,file='kenya_donor_percent.csv',na ='',row.names = F)
+
+setwd(sok_folder)
+
+finance$local_percent <- (finance$value.x/finance$total_revenue)*100
+local_percent <- finance[which(!is.na(finance$local_percent)),c('id','year','local_percent')]
+local_percent$budget_type <- 'actual'
+
+setwd(outputfolder)
+write.csv(x=local_percent,file='kenya_local_percent.csv',na ='',row.names = F)
+
+setnames(local_revenue,'value','value_ncu')
+local_revenue$value <- local_revenue$value_ncu/128.4786036
+write.csv(local_revenue,'kenya_igf_resources.csv',na = '',row.names = F)
+
 

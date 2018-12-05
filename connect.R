@@ -34,7 +34,7 @@ ddw <- function(schemaTable){
     schema <- split[1]
     table <- split[2]
     schemaTables <- schemaListTables(schema)
-    if(table %in% schemaTables){
+    if(table %in% schemaTables$table_name){
      
       return(dbReadTable(con,c(schema,table)))
     }else{
@@ -42,7 +42,7 @@ ddw <- function(schemaTable){
     }
   }else{
     allTables <- dbListTables(con)
-    if(schemaTable %in% allTables){
+    if(schemaTable %in% allTables$table_name){
       return(dbReadTable(con,schemaTable))
     }else{
       return(data.frame())
