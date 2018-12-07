@@ -12,13 +12,14 @@ lapply(list.of.packages, require, character.only=T)
 # postgres_user_pass
 # postgres_db_name
 
-wd <- getwd()
+wd <- '/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts/'
 message(wd)
 #"~/git/ddw-r-scripts"
-#setwd(wd)
+setwd(wd)
 
 source("connect.R")
 source("baseYearConstants.R")
+source("ReadWBIndicators.R")
 
 # Pull in id mappings and deflators. Performing merges to append di_id to the deflator
 wdi_id_map = ddw("dimension.wb_wdi_country_to_di_id_map")
@@ -34,7 +35,7 @@ convert_wb_wdi_series_simple = function(df,base_year,precision){
   
   df = data.table(merge(df,imf_wdi_map,by="wb_wdi_country_code",all.x=T))
   base_year_deflator = subset(deflator,year==base_year)
-
+  
   setnames(base_year_deflator,"deflator","base_year_deflator")
   setnames(base_year_deflator,"year","base_year")
   setnames(df,"wb_wdi_country_code","iso_alpha_3_code")
@@ -52,14 +53,14 @@ convert_wb_wdi_series_simple = function(df,base_year,precision){
 # Function to pull from WDI API
 dh_wdi = function(indicator,start=wb_data_start_year,end=current_year){
   
-  dat <- WDI(country = "all", 
-             indicator = indicator, 
-             start = start, 
-             end = end,
-             extra = TRUE
-  )
+  # dat <- WDI(country = "all", 
+  #            indicator = indicator, 
+  #            start = start, 
+  #            end = end,
+  #            extra = TRUE
+  # )
+  dat <- getWDIData(indicator = indicator,date  = paste0(start,':',end))
   
-  setnames(dat,indicator,"value")
   dat = merge(wdi_id_map,dat,by="iso3c")
   
   setnames(dat,"iso3c","wb_wdi_country_code")
@@ -102,15 +103,15 @@ tables_list = list()
 # tables_list[["gdp-pc-usd-2015"]] = gdp_pc_usd_2015
 
 # https://github.com/devinit/ddh_donata_scripts/blob/master/data_etl/dh/fact_wb/CREATE_TABLE_gdp_usd_current.sql
-series = dbReadTable(con,c("public","individual_wb_wdi_series_in_di_dh"))
+series <- dbReadTable(con,c("public","individual_wb_wdi_series_in_di_dh"))
 for(i in 1:nrow(series)){
-  serie = series[i,]
+  serie <- series[i,]
   message(serie$di_dh_series_id)
-  dat = dh_wdi(serie$wb_wdi_series_code)
+  dat <- dh_wdi(serie$wb_wdi_series_code)
   if(grepl("current",serie$wb_wdi_indicator_name,ignore.case=T)){
-    constant_name = gsub("current","constant",serie$di_dh_series_id)
+    constant_name <- gsub("current","constant",serie$di_dh_series_id)
     message(constant_name)
-    dat_constant = convert_wb_wdi_series_simple(dat,base_year,2)
+    dat_constant <- convert_wb_wdi_series_simple(dat,base_year,2)
     tables_list[[constant_name]] = dat_constant
   }
   dat$wb_wdi_country_code = NULL
@@ -118,11 +119,11 @@ for(i in 1:nrow(series)){
 }
 
 message(paste0('Outputing downloaded content to "output" folder under path ',wd))
-setwd(paste(wd,"output",sep = "/"))
-table_names = names(tables_list)
+setwd(paste(wd,"output","wb",sep = "/"))
+table_names <- names(tables_list)
 for(table_name in table_names){
   individual_table = tables_list[[table_name]]
   write.csv(individual_table,paste0("fact.",table_name,".csv"),na="",row.names=F)
 }
 
- #dbDisconnect(con)
+dbDisconnect(con)

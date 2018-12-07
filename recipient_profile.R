@@ -77,12 +77,13 @@ get_oda_per_captita <- function(isConstantYearCalculation,excludingNonTransfer){
 # --2
 get_oda_per_percent_gdp <- function(excludingNonTransfer){
   
-  gdp_usd_current <- ddw('fact.gdp_usd_current')  #%>% data.table
+  gdp_usd_current <- read.csv(paste(wd,'output/wb/fact.gdp-usd-current.csv',sep="/"),stringsAsFactors = F,na.strings = "")  #%>% data.table
   
   
   #get sum of oda to each country
   oda_sum <- if(excludingNonTransfer) oda[which(oda$bundle %!in% c('non-transfer')),]
-  per_percent_gdp <- oda_sum <- if(excludingNonTransfer) aggregate(oda_sum$value,by=list(di_id=oda_sum$to_di_id,year=oda_sum$year),FUN=sum) else aggregate(oda$value,by=list(di_id=oda$to_di_id,year=oda$year),FUN=sum)
+  per_percent_gdp <- oda_sum <- if(excludingNonTransfer) aggregate(oda_sum$value,by=list(di_id=oda_sum$to_di_id,year=oda_sum$year),FUN=sum) 
+  else aggregate(oda$value,by=list(di_id=oda$to_di_id,year=oda$year),FUN=sum)
   setnames(per_percent_gdp,'x','total_oda')
   
   #merge the sum calculated with population in order  to calculate per capita values
@@ -94,7 +95,7 @@ get_oda_per_percent_gdp <- function(excludingNonTransfer){
   setnames(per_percent_gdp,'per_capita_value','value')
   
   of <- if(excludingNonTransfer)  'oda_per_percent_gdp_excluding_non_transfer.csv' else 'oda_per_percent_gdp.csv'
-  write.csv(per_percent_gdp,row.names = F,na = "",file=paste0(wd,'/output/','recipient_profile.',of))
+  write.csv(per_percent_gdp,row.names = F,na = "",file=paste0(wd,'/output/recipient_profile/','recipient_profile.',of))
 }
 
 
