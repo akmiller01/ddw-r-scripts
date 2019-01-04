@@ -1,0 +1,256 @@
+list.of.packages <- c("data.table","tidyverse")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only=T)
+
+
+#Load dac2a mirror data from source data
+#Path to row downloaded data 
+#Make sure all files are already extracted
+
+setwd("~/ddw_update/")
+
+dac2a_path <- "~/ddw_update/data_source/oecd_dac_table_2a/Table2a_Data.csv"
+dac2b_path <- "~/ddw_update/data_source/oecd_dac_table_2b/Table2b_Data.csv"
+dac5_path <- "~/ddw_update/data_source/oecd_dac_table_5/Table5_Data.csv"
+dac1_path <- "~/ddw_update/data_source/oecd_dac_table_1/Table1_Data.csv"
+
+#This cannot point to a file, we will be working with several files
+#Checking header lengths, invalid characters and missing data content
+
+crs_path <- "~/ddw_update/data_source/oecd_dac_crs"
+
+clean_dac2a_file = function(){
+  
+  dac2a <- fread(dac2a_path)
+  setnames(dac2a,
+           c('RECIPIENT',
+                   'Recipient',
+                   'DONOR',
+                   'Donor',
+                    'PART',
+                   'Part',
+                   'AIDTYPE',
+                   'Aid type',
+                   'DATATYPE',
+                   'Amount type',
+                   'TIME',
+                   'Year',
+                   'Value',
+                   'Flags')
+                   ,
+           c('recipient_code',
+             'recipient_name',
+             'donor_code',
+             'donor_name',
+             'part_code',
+             'part_name',
+             'aid_type_code',
+             'aid_type_name',
+             'data_type',
+             'amount_type',
+             'time',
+             'year',
+             'value',
+             'flags'
+             ));
+  
+  if(!dir.exists('mirrors')){
+    dir.create('mirrors')
+  }
+
+  fwrite(dac2a,file = 'mirrors/dac2a.csv',append = FALSE);
+  rm(dac2a);
+  
+}
+
+clean_dac2b_file = function(){
+  
+  dac2b <- fread(dac2b_path)
+  setnames(dac2b,
+           c('RECIPIENT'
+             ,'Recipient'
+             ,'DONOR'
+             ,'Donor'
+             ,'PART'
+             ,'Part'
+             ,'AIDTYPE'
+             ,'Aid type'
+             ,'DATATYPE'
+             ,'Amount type'
+             ,'TIME'
+             ,'Year'
+             ,'Value'
+             ,'Flags')
+           ,
+           c('recipient_code',
+             'recipient_name',
+             'donor_code',
+             'donor_name',
+             'part_code',
+             'part_name',
+             'aid_type_code',
+             'aid_type_name',
+             'data_type',
+             'amount_type',
+             'time',
+             'year',
+             'value',
+             'flags'
+           ));
+  
+  if(!dir.exists('mirrors')){
+    dir.create('mirrors')
+  }
+  
+  fwrite(dac2b,file = 'mirrors/dac2b.csv',append = FALSE);
+  
+}
+
+clean_dac5_file = function(){
+  dac5 <- fread(dac5_path)
+  setnames(dac5,
+           c('DONOR'
+             ,'Donor'
+             ,'SECTOR'
+             ,'Sector'
+             ,'AIDTYPE'
+             ,'Aid type'
+             ,'AMOUNTTYPE'
+             ,'Amount type'
+             ,'TIME'
+             ,'Year'
+             ,'Value'
+             ,'Flags')
+           ,
+           c('donor_code'
+             ,'donor_name'
+             ,'sector_code'
+             ,'sector_name'
+             ,'aid_type_code'
+             ,'aid_type_name'
+             ,'amount_type_code'
+             ,'amount_type_name'
+             ,'time'
+             ,'year'
+             ,'value'
+             ,'flags'
+           ));
+  
+  if(!dir.exists('mirrors')){
+    dir.create('mirrors')
+  }
+  
+  fwrite(dac5,file = 'mirrors/dac5.csv',append = FALSE);
+
+}
+
+
+clean_dac1_file = function(){
+  dac1 <- fread(dac1_path)
+  setnames(dac1,
+           c('DONOR'
+             ,'Donor'
+             ,'PART'
+             ,'Part'
+             ,'AIDTYPE'
+             ,'Aid type'
+             ,'FLOWS'
+             ,'Fund flows'
+             ,'AMOUNTTYPE'
+             ,'Amount type'
+             ,'TIME'
+             ,'Year'
+             ,'Value'
+             ,'Flags')
+           ,
+           c('donor_code'
+             ,'donor_name'
+             ,'part_code'
+             ,'part_name'
+             ,'aid_type_code'
+             ,'aid_type_name'
+             ,'flows'
+             ,'fund_flows'
+             ,'amount_type_code'
+             ,'amount_type_name'
+             ,'time'
+             ,'year'
+             ,'value'
+             ,'flags'
+           ));
+  
+  if(!dir.exists('mirrors')){
+    dir.create('mirrors')
+  }
+  
+  fwrite(dac1,file = 'mirrors/dac1.csv',append = FALSE);
+}
+
+#This can be done better, read actual files and use ncol before doing processing, that way
+#You wont need this method
+check_crs_headers = function(file_v){
+  
+  expected_2016_length <- 86
+  
+  #Check that the length of the total number of columns match what is expected
+  #If column lengths don't match, do a manual visual check to see what has been added or removed
+  #All columns need to have the same lenghth for all files of CRS because each change affects all years
+  for(fi in file_v){
+    
+    fo <- file(fi,"r")
+    first_line <- readLines(fo,n = 1)
+    split_vec <- strsplit(first_line,"|",fixed=TRUE)[[1]]
+    
+    if((length(split_vec) < expected_2016_length) || (length(split_vec) > expected_2016_length)){
+      e <- simpleError(sprintf("Found length %f for file %s but expecting %f ",length(split_vec),fi,expected_2016_length))
+      stop(e)
+    }
+  }
+  
+ 
+}
+
+merge_crs_tables = function(file_vec){
+  
+  if(!dir.exists('crs_cleanup')){
+    dir.create('crs_cleanup')
+  }
+  
+  data.list = list()
+  data.index = 1
+  
+  # Loop through, and use the `fread` function from `data.table` package.
+  # CRS has some embedded null characters, which we need to fix.
+  for(txt in file_vec){
+    r = readBin(txt, raw(), file.info(txt)$size)
+    r[r==as.raw(0)] = as.raw(0x20) ## replace with 0x20 = <space>
+    writeBin(r, paste0("crs_cleanup/",basename(txt)) )
+    tmp = fread(paste0("crs_cleanup/",basename(txt)),sep="|")
+    data.list[[data.index]] = tmp
+    data.index = data.index + 1
+  }
+  
+  crs = do.call(rbind,data.list)
+  message("Total CRS rows: ",nrow(crs))
+  
+  if(!dir.exists('mirrors')){
+    dir.create('mirrors')
+  }
+  
+  fwrite(crs,file = 'mirrors/crs.csv',append = FALSE);
+}
+
+clean_crs_file = function(){
+  file_list <- list.files(path = crs_path,pattern = "*.txt",full.names = TRUE,recursive = FALSE);
+  
+  check_crs_headers(file_list)
+  merge_crs_tables(file_list);
+}
+
+clean_crs_file()
+
+clean_dac2a_file()
+clean_dac1_file()
+clean_dac2b_file()
+clean_dac5_file()
