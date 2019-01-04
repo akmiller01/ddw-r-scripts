@@ -238,7 +238,7 @@ merge_crs_tables = function(file_vec){
     dir.create('mirrors')
   }
   
-  fwrite(crs,file = 'mirrors/crs.csv',append = FALSE);
+  fwrite(crs,file = 'mirrors/crs_mirror.csv',append = FALSE);
 }
 
 clean_crs_file = function(){
