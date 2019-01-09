@@ -127,7 +127,7 @@ oda_filter$oda_donor_bundle[which(as.character(oda_filter$channel_code) %like%  
 # Bundle Code B
 
 donor_code_v <- c(901,905,906,907,909,912,913,914,915,916,921,951,953,958,976,990,1013)
-description_g <- 'finance|fund|subsidy|financement|fonds|subsidie'
+description_g <- ' finance | fund | subsidy | financement | fonds |subsidie '
 swp <- ' SWAP '
 
 oda_filter$short_description_l <- str_to_lower(oda_filter$short_description)
@@ -148,14 +148,14 @@ oda_filter$oda_donor_bundle[which(( grepl(swp,oda_filter$long_description,ignore
 
 
 # Bundle Code D
-long_description_g <- 'research'
+long_description_g <- ' research'
 # grep %research% and recipient code 998
 
 oda_filter$oda_donor_bundle[which(grepl(long_description_g,oda_filter$long_description,ignore.case  = TRUE, useBytes = TRUE) & oda_filter$recipient_code == 9998 & 
                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'D'
 
 # Bundle G
-description_g <- 'consultancy|consultant|technical assistance|technical cooperation|training'
+description_g <- ' consultancy | consultant | technical assistance | technical cooperation | training '
 
 
 #Search for the occurrences of short_description and long_description
@@ -164,7 +164,7 @@ oda_filter$oda_donor_bundle[which((grepl(description_g,oda_filter$long_descripti
                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'G'
 
 # Bundle Code C
-description_g <-'vaccin|vacci|non-food|nonfood|non alimentaire'
+description_g <-' vaccin| vacci| non-food | nonfood | non alimentaire '
 
 
 # Check for purpose code, short_description and long_description
