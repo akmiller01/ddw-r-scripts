@@ -127,7 +127,7 @@ oda_filter$oda_donor_bundle[which(as.character(oda_filter$channel_code) %like%  
 # Bundle Code B
 
 donor_code_v <- c(901,905,906,907,909,912,913,914,915,916,921,951,953,958,976,990,1013)
-description_g <- ' finance | fund | subsidy | financement | fonds |subsidie '
+description_g <- ' finance | fund | subsidy | financement | fonds | subsidie '
 swp <- ' SWAP '
 
 oda_filter$short_description_l <- str_to_lower(oda_filter$short_description)
