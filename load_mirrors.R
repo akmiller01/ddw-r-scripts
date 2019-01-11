@@ -3,17 +3,20 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
 
-
+source("baseYearConstants.R")
 #Load dac2a mirror data from source data
 #Path to row downloaded data 
 #Make sure all files are already extracted
-
-setwd("~/ddw_update/")
+wd <- "~/ddw_update/"
+setwd(wd)
 
 dac2a_path <- "~/ddw_update/data_source/oecd_dac_table_2a/Table2a_Data.csv"
 dac2b_path <- "~/ddw_update/data_source/oecd_dac_table_2b/Table2b_Data.csv"
 dac5_path <- "~/ddw_update/data_source/oecd_dac_table_5/Table5_Data.csv"
 dac1_path <- "~/ddw_update/data_source/oecd_dac_table_1/Table1_Data.csv"
+
+
+release <- '2019_01_09'#format(Sys.time(), "%Y_%m_%d")
 
 #This cannot point to a file, we will be working with several files
 #Checking header lengths, invalid characters and missing data content
@@ -377,7 +380,7 @@ merge_crs_tables = function(file_vec){
              ,"channel_code"
              ,"channel_name"
              ,"channel_reported_name"
-             ,"parent_channel_code" # Guessed column name
+             ,"channel_parent_category" # Guessed column name
              ,"geography"
              ,"expected_start_date"
              ,"completion_date"
@@ -427,9 +430,132 @@ clean_crs_file = function(){
   merge_crs_tables(file_list);
 }
 
+
+#This can be done better, read actual files and use ncol before doing processing, that way
+#You wont need this method
+check_crs_headers = function(file_v){
+  
+  expected_2016_length <- 86
+  
+  #Check that the length of the total number of columns match what is expected
+  #If column lengths don't match, do a manual visual check to see what has been added or removed
+  #All columns need to have the same lenghth for all files of CRS because each change affects all years
+  for(fi in file_v){
+    
+    fo <- file(fi,"r")
+    first_line <- readLines(fo,n = 1)
+    split_vec <- strsplit(first_line,"|",fixed=TRUE)[[1]]
+    
+    if((length(split_vec) < expected_2016_length) || (length(split_vec) > expected_2016_length)){
+      e <- simpleError(sprintf("Found length %f for file %s but expecting %f ",length(split_vec),fi,expected_2016_length))
+      stop(e)
+    }
+  }
+  
+ 
+}
+
+
+# This function loads the crs mirror to the first available postgre instance in the dev envrioment.
+# The assumption is that postgre is running on port 5432 and the executing user has all the relevant privileges to
+# created and populate a new database
+load_crs_mirror_to_postgres = function(){
+  
+  
+  #Create database oecd_crs_mirror_tmp and create in it schema crs
+  setwd('~/git/ddw-r-scripts')
+  create_schema_script <- paste0(getwd(),'/shell-scripts/crs-to-postgres/create.crs.schema.and.grant.privilege.to.user.sh')
+  system(paste0(create_schema_script,' oecd_crs_mirror'))
+  
+  
+  create_table_script <- paste0(getwd(),'/shell-scripts/crs-to-postgres/create.table.sh')
+  system(paste0(create_table_script,' oecd_crs_mirror crs ',release,
+                paste0(' ',getwd(),
+                       '/shell-scripts/crs-to-postgres/table_template_temporary.txt')))
+  
+  #populate crs data into mirror database
+  copy_data_to_table <- paste0(getwd(),'/shell-scripts/crs-to-postgres/read.in.specific.table.sh')
+  system(paste0(copy_data_to_table,' oecd_crs_mirror crs ',release,
+                paste0(' ',getwd(),'/shell-scripts/crs-to-postgres/read_in_table_template.txt '),
+                paste0(wd,'mirrors/crs_mirror.csv')))
+  
+  #After loading crs script to DB, need to change column datatypes to the proper datatypes
+  
+  # #Convert text to timestamp columns
+  # char_to_timestamp <- paste0(getwd(),'/shell-scripts/crs-to-postgres/convert.column.type.to.timestamp.sh')
+  # system(paste0(char_to_timestamp,' oecd_crs_mirror crs ',release,
+  #             paste0(' "',getwd(),'/shell-scripts/crs-to-postgres/column_to_convert_to_timestamp.txt"')))
+  
+  
+  char_to_text <- paste0(getwd(),'/shell-scripts/crs-to-postgres/convert.column.type.to.text.sh')
+  system(paste0(char_to_text,' oecd_crs_mirror crs ',release,
+                paste0(' "',getwd(),'/shell-scripts/crs-to-postgres/column_to_convert_to_text.txt"')))
+  
+  char_to_smallint <- paste0(getwd(),'/shell-scripts/crs-to-postgres/convert.column.type.to.smallint.sh')
+  system(paste0(char_to_smallint,' oecd_crs_mirror crs ',release,
+                paste0(' "',getwd(),'/shell-scripts/crs-to-postgres/column_to_convert_to_smallint.txt"')))
+  
+  text_to_numeric <- paste0(getwd(),'/shell-scripts/crs-to-postgres/convert.column.type.to.numeric.sh')
+  system(paste0(text_to_numeric,' oecd_crs_mirror crs ',release,
+                paste0(' "',getwd(),'/shell-scripts/crs-to-postgres/column_to_convert_to_numeric.txt"')))
+  
+  char_to_int <- paste0(getwd(),'/shell-scripts/crs-to-postgres/convert.column.type.to.int.sh')
+  system(paste0(char_to_int,' oecd_crs_mirror crs ',release,
+                paste0(' "',getwd(),'/shell-scripts/crs-to-postgres/column_to_convert_to_int.txt"')))
+  
+  
+}
+
+load_dac1_to_postgres <- function(){
+  encoding <- 'UTF8'
+  max_year <- current_year +1
+  mirror_path <- "~/ddw_update/mirrors/dac1.csv"
+  
+  load_command <- paste0(getwd(),'/shell-scripts/dac1-to-postgres/create.table.table.1.data.sh ',release,' ',encoding,' ',max_year,' ',mirror_path)
+  system(load_command)
+}
+
+load_dac2a_to_postgres <- function(){
+  encoding <- 'LATIN9'
+  max_year <- current_year +1
+  mirror_path <- "~/ddw_update/mirrors/dac2a.csv"
+  load_command <- paste0(getwd(),'/shell-scripts/dac2a-to-postgres/create.table.table.2a.data.sh ',release,' ',encoding,' ',max_year,' ',mirror_path)
+  
+  system(load_command)
+  
+}
+
+load_dac2b_to_postgres <- function(){
+  encoding <- 'LATIN9'
+  max_year <- current_year +1
+  mirror_path <- "~/ddw_update/mirrors/dac2b.csv"
+  load_command <- paste0(getwd(),'/shell-scripts/dac2b-to-postgres/create.table.table.2b.data.sh ',release,' ',encoding,' ',max_year,' ',mirror_path)
+  
+  system(load_command)
+  
+}
+
+load_dac5_to_postgres <- function(){
+  encoding <- 'LATIN9'
+  max_year <- current_year +1
+  mirror_path <- "~/ddw_update/mirrors/dac5.csv"
+  load_command <- paste0(getwd(),'/shell-scripts/dac5-to-postgres/create.table.table.5.data.sh ',release,' ',encoding,' ',max_year,' ',mirror_path)
+  
+  system(load_command)
+  
+}
+
 clean_crs_file()
+load_crs_mirror_to_postgres()
 
 clean_dac2a_file()
+load_dac2a_to_postgres()
+
 clean_dac1_file()
+load_dac1_to_postgres()
+
 clean_dac2b_file()
+load_dac2b_to_postgres()
+
 clean_dac5_file()
+load_dac5_to_postgres()
