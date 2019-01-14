@@ -187,10 +187,10 @@ save(oda_filter, file="output/oda_filter.RData")
 
 names(channel_code_5_web_map) = c("channel_code","itep_channel_name","itep_channel_web_id")
 channel_code_5_web_map$itep_channel_web_id = NULL
-oda_filter = merge(oda_filter,channel_map, by="channel_code")
+oda_filter = merge(oda_filter,channel_code_5_web_map, by="channel_code")
 
-names(sector_3_code_map) = c("purpose_code","itep_sector_name")
-oda_filter = merge(oda_filter,sector_map, by="purpose_code")
+names(sector_3_code_map) = c("sector_code","itep_sector_name")
+oda_filter = merge(oda_filter,sector_3_code_map, by="sector_code")
 
 oda_tab = oda_filter[,.(
   usd_disbursement_deflated=sum(usd_disbursement_deflated,na.rm=T),
