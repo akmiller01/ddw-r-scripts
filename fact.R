@@ -130,8 +130,12 @@ donor_code_v <- c(901,905,906,907,909,912,913,914,915,916,921,951,953,958,976,99
 description_g <- ' finance | fund | subsidy | financement | fonds | subsidie '
 swp <- ' SWAP '
 
-oda_filter$short_description_l <- str_to_lower(oda_filter$short_description)
-oda_filter$long_description_l <- str_to_lower(oda_filter$long_description)
+space = function(x){
+  return(gsub('[[:punct:] ]+',' ',paste0(" ",x," "),useBytes=T))
+}
+
+oda_filter$short_description_l <- space(oda_filter$short_description)
+oda_filter$long_description_l <- space(oda_filter$long_description)
 
 oda_filter$oda_donor_bundle[which(oda_filter$donor_code %in%  donor_code_v & oda_filter$usd_disbursement >= 1 & 
                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'B'
@@ -181,12 +185,11 @@ oda_filter$channel_code[which(as.character(oda_filter$channel_code) %like%  chan
 save(oda_filter, file="output/oda_filter.RData")
 # load("output/oda_filter.RData")
 
-channel_map = data.table(read.csv("http://212.111.41.68:8000/single_table?indicator=oecd_crs_channel_code_5_digit_to_di_itep_channel_map&format=csv", as.is=T))
-names(channel_map) = c("channel_code","itep_channel_name")
+names(channel_code_5_web_map) = c("channel_code","itep_channel_name","itep_channel_web_id")
+channel_code_5_web_map$itep_channel_web_id = NULL
 oda_filter = merge(oda_filter,channel_map, by="channel_code")
 
-sector_map = data.table(read.csv("http://212.111.41.68:8000/single_table?indicator=oecd_crs_purpose_code_5_digit_to_di_itep_sector_map&format=csv", as.is=T))
-names(sector_map) = c("purpose_code","itep_sector_name")
+names(sector_3_code_map) = c("purpose_code","itep_sector_name")
 oda_filter = merge(oda_filter,sector_map, by="purpose_code")
 
 oda_tab = oda_filter[,.(
