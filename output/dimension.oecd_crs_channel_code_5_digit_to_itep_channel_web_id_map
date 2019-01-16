@@ -1,370 +1,380 @@
-"oecd_crs_channel_code","itep_channel_name","itep_channel_web_id"
-21000,"International NGO","ngo-donor"
-21016,"International NGO","ngo-donor"
-21018,"International NGO","ngo-donor"
-21020,"International NGO","ngo-donor"
-21023,"International NGO","ngo-donor"
-21029,"International NGO","ngo-donor"
-21032,"International NGO","ngo-donor"
-21034,"International NGO","ngo-donor"
-21045,"International NGO","ngo-donor"
-21062,"International NGO","ngo-donor"
-41000,"United Nations","multilateral"
-41101,"United Nations","multilateral"
-41103,"United Nations","multilateral"
-41104,"United Nations","multilateral"
-41105,"United Nations","multilateral"
-41106,"United Nations","multilateral"
-41107,"United Nations","multilateral"
-41108,"United Nations","multilateral"
-41110,"United Nations","multilateral"
-41111,"United Nations","multilateral"
-41112,"United Nations","multilateral"
-41114,"United Nations","multilateral"
-41116,"United Nations","multilateral"
-41119,"United Nations","multilateral"
-41120,"United Nations","multilateral"
-41121,"United Nations","multilateral"
-41122,"United Nations","multilateral"
-41123,"United Nations","multilateral"
-41125,"United Nations","multilateral"
-41126,"United Nations","multilateral"
-41127,"United Nations","multilateral"
-41128,"United Nations","multilateral"
-41129,"United Nations","multilateral"
-41130,"United Nations","multilateral"
-41131,"United Nations","multilateral"
-41132,"United Nations","multilateral"
-41134,"United Nations","multilateral"
-41135,"United Nations","multilateral"
-41136,"United Nations","multilateral"
-41137,"United Nations","multilateral"
-41138,"United Nations","multilateral"
-41140,"United Nations","multilateral"
-41141,"United Nations","multilateral"
-41142,"United Nations","multilateral"
-41143,"United Nations","multilateral"
-41144,"United Nations","multilateral"
-41145,"United Nations","multilateral"
-41146,"United Nations","multilateral"
-41147,"United Nations","multilateral"
-41148,"United Nations","multilateral"
-41301,"United Nations","multilateral"
-41302,"United Nations","multilateral"
-41303,"United Nations","multilateral"
-41304,"United Nations","multilateral"
-41305,"United Nations","multilateral"
-41306,"United Nations","multilateral"
-41307,"United Nations","multilateral"
-41308,"United Nations","multilateral"
-41309,"United Nations","multilateral"
-41310,"United Nations","multilateral"
-41311,"United Nations","multilateral"
-41312,"United Nations","multilateral"
-41313,"United Nations","multilateral"
-41314,"United Nations","multilateral"
-41315,"United Nations","multilateral"
-41316,"United Nations","multilateral"
-42000,"European Union","multilateral"
-42001,"European Union","multilateral"
-42002,"Unknown","unspecified"
-42003,"European Union","multilateral"
-42004,"European Union","multilateral"
-43000,"International Monetary Fund","multilateral"
-43001,"International Monetary Fund","multilateral"
-43002,"International Monetary Fund","multilateral"
-43003,"International Monetary Fund","multilateral"
-43004,"International Monetary Fund","multilateral"
-44000,"World Bank Group","multilateral"
-44001,"World Bank Group","multilateral"
-22000,"Donor country based NGO","ngo-donor"
-11000,"Donor government","public-sector-donor"
-20000,"NGO and CSO (type unspecified)","ngo-unknown"
-10000,"Public sector (unspecified whether donor or recipient)","public-sector-unknown"
-12000,"Recipient government","public-sector-recipient"
-13000,"Third country government","public-sector-unknown"
-30010,"Other multilateral institution","multilateral"
-41109,"United Nations","multilateral"
-41124,"United Nations","multilateral"
-41317,"Other multilateral institution","multilateral"
-30000,"Public-Private Partnerships (PPPs) and Networks","ppps-and-networks"
-44002,"World Bank Group","multilateral"
-44003,"World Bank Group","multilateral"
-44004,"World Bank Group","multilateral"
-44005,"World Bank Group","multilateral"
-44006,"World Bank Group","multilateral"
-44007,"World Bank Group","multilateral"
-45000,"World Trade Organisation","multilateral"
-45001,"World Trade Organisation","multilateral"
-45002,"World Trade Organisation","multilateral"
-45003,"World Trade Organisation","multilateral"
-46000,"Regional Development Bank","multilateral"
-46002,"Regional Development Bank","multilateral"
-46003,"Regional Development Bank","multilateral"
-46004,"Regional Development Bank","multilateral"
-46005,"Regional Development Bank","multilateral"
-46006,"Regional Development Bank","multilateral"
-46007,"Regional Development Bank","multilateral"
-46008,"Regional Development Bank","multilateral"
-46009,"Regional Development Bank","multilateral"
-46012,"Regional Development Bank","multilateral"
-46013,"Regional Development Bank","multilateral"
-46015,"Regional Development Bank","multilateral"
-46016,"Regional Development Bank","multilateral"
-46017,"Regional Development Bank","multilateral"
-46018,"Regional Development Bank","multilateral"
-46019,"Regional Development Bank","multilateral"
-46020,"Regional Development Bank","multilateral"
-46021,"Regional Development Bank","multilateral"
-46022,"Regional Development Bank","multilateral"
-46023,"Regional Development Bank","multilateral"
-46024,"Regional Development Bank","multilateral"
-47000,"Other multilateral institution","multilateral"
-47003,"Other multilateral institution","multilateral"
-47005,"Other multilateral institution","multilateral"
-47011,"Other multilateral institution","multilateral"
-47015,"Other multilateral institution","multilateral"
-47031,"Unknown","unspecified"
-47034,"Other multilateral institution","multilateral"
-47044,"Other multilateral institution","multilateral"
-47045,"Other multilateral institution","multilateral"
-47046,"Other multilateral institution","multilateral"
-47049,"Unknown","unspecified"
-47066,"Other multilateral institution","multilateral"
-47078,"Other multilateral institution","multilateral"
-47079,"Other multilateral institution","multilateral"
-47083,"Other multilateral institution","multilateral"
-47089,"Other multilateral institution","multilateral"
-47094,"Unknown","unspecified"
-47096,"Other multilateral institution","multilateral"
-47107,"Other multilateral institution","multilateral"
-47108,"Unknown","unspecified"
-47122,"Other multilateral institution","multilateral"
-47128,"Other multilateral institution","multilateral"
-47129,"Other multilateral institution","multilateral"
-47130,"Other multilateral institution","multilateral"
-47131,"Other multilateral institution","multilateral"
-47134,"Other multilateral institution","multilateral"
-47135,"Other multilateral institution","multilateral"
-47136,"Other multilateral institution","multilateral"
-47138,"Other multilateral institution","multilateral"
-52000,"Other","other"
-41318,"United Nations","multilateral"
-43005,"International Monetary Fund","multilateral"
-43006,"International Monetary Fund","multilateral"
-47111,"Other multilateral institution","multilateral"
-47144,"Other multilateral institution","multilateral"
-47102,"Other multilateral institution","multilateral"
-90000,"Other","other"
-61000,"Donor private sector","private-sector-institution"
-62000,"Recipient private sector","private-sector-institution"
-63000,"Third country private sector","private-sector-institution"
-23000,"Developing country based NGO","ngo-recipient"
-12001,"Recipient government","public-sector-recipient"
-12002,"Recipient government","public-sector-recipient"
-12003,"Recipient government","public-sector-recipient"
-47010,"Network","ppps-and-networks"
-47014,"Other multilateral institution","multilateral"
-50000,"Other","other"
-47017,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47018,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47021,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47035,"International NGO","ngo-donor"
-47043,"Public-Private Partnership (PPP)","ppps-and-networks"
-47051,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47056,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47062,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47069,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47070,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47075,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47104,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-51000,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47004,"Other multilateral institution","multilateral"
-11001,"Donor government","public-sector-donor"
-11002,"Donor government","public-sector-donor"
-11003,"Donor government","public-sector-donor"
-11004,"Donor government","public-sector-donor"
-40000,"Multilateral organisation (type unspecified)","multilateral"
-12004,"Recipient government","public-sector-recipient"
-21001,"International NGO","ngo-donor"
-21002,"Other multilateral institution","multilateral"
-21003,"Developing country based NGO","ngo-recipient"
-21004,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-21005,"International NGO","ngo-donor"
-21006,"Donor country based NGO","ngo-donor"
-21007,"International NGO","ngo-donor"
-21008,"Donor country based NGO","ngo-donor"
-21009,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-21010,"Developing country based NGO","ngo-recipient"
-21011,"International NGO","ngo-donor"
-21013,"International NGO","ngo-donor"
-21014,"Donor country based NGO","ngo-donor"
-21015,"Donor country based NGO","ngo-donor"
-21019,"Donor country based NGO","ngo-donor"
-21021,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-21022,"International NGO","ngo-donor"
-21024,"International NGO","ngo-donor"
-21025,"Donor country based NGO","ngo-donor"
-21026,"Donor country based NGO","ngo-donor"
-21027,"Donor country based NGO","ngo-donor"
-21028,"Developing country based NGO","ngo-recipient"
-21030,"Developing country based NGO","ngo-recipient"
-21031,"International NGO","ngo-donor"
-21033,"Donor country based NGO","ngo-donor"
-21035,"Donor country based NGO","ngo-donor"
-21036,"International NGO","ngo-donor"
-21037,"Donor country based NGO","ngo-donor"
-21038,"International NGO","ngo-donor"
-21039,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-21040,"Donor country based NGO","ngo-donor"
-21041,"International NGO","ngo-donor"
-21042,"International NGO","ngo-donor"
-21044,"International NGO","ngo-donor"
-21046,"International NGO","ngo-donor"
-21047,"Donor country based NGO","ngo-donor"
-21048,"Developing country based NGO","ngo-recipient"
-21049,"Donor country based NGO","ngo-donor"
-21050,"Donor country based NGO","ngo-donor"
-21051,"Developing country based NGO","ngo-recipient"
-21053,"International NGO","ngo-donor"
-21054,"International NGO","ngo-donor"
-21055,"Developing country based NGO","ngo-recipient"
-21057,"International NGO","ngo-donor"
-21058,"Donor country based NGO","ngo-donor"
-21059,"Developing country based NGO","ngo-recipient"
-21060,"Donor country based NGO","ngo-donor"
-21061,"International NGO","ngo-donor"
-21063,"International NGO","ngo-donor"
-21501,"International NGO","ngo-donor"
-21502,"International NGO","ngo-donor"
-21503,"International NGO","ngo-donor"
-21504,"International NGO","ngo-donor"
-21505,"International NGO","ngo-donor"
-21506,"International NGO","ngo-donor"
-21507,"International NGO","ngo-donor"
-22501,"Donor country based NGO","ngo-donor"
-22502,"Donor country based NGO","ngo-donor"
-23501,"Developing country based NGO","ngo-recipient"
-41102,"United Nations","multilateral"
-41133,"United Nations","multilateral"
-41319,"United Nations","multilateral"
-41501,"United Nations","multilateral"
-41502,"United Nations","multilateral"
-41503,"United Nations","multilateral"
-46025,"Regional Development Bank","multilateral"
-46026,"Regional Development Bank","multilateral"
-47001,"Other multilateral institution","multilateral"
-47002,"Other multilateral institution","multilateral"
-47009,"Other multilateral institution","multilateral"
-47012,"Other multilateral institution","multilateral"
-47013,"Other multilateral institution","multilateral"
-47019,"Other multilateral institution","multilateral"
-47022,"Other multilateral institution","multilateral"
-47025,"Other multilateral institution","multilateral"
-47026,"Other multilateral institution","multilateral"
-47027,"Other multilateral institution","multilateral"
-47029,"Other multilateral institution","multilateral"
-47036,"Other multilateral institution","multilateral"
-47037,"Other multilateral institution","multilateral"
-47040,"Other multilateral institution","multilateral"
-47042,"Donor country based NGO","ngo-donor"
-47047,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47050,"Other multilateral institution","multilateral"
-47058,"Other multilateral institution","multilateral"
-47059,"Other multilateral institution","multilateral"
-47061,"Other multilateral institution","multilateral"
-47064,"Other multilateral institution","multilateral"
-47065,"Other multilateral institution","multilateral"
-47067,"Other multilateral institution","multilateral"
-47068,"Other multilateral institution","multilateral"
-47073,"Other multilateral institution","multilateral"
-47074,"Other multilateral institution","multilateral"
-47076,"Other multilateral institution","multilateral"
-47077,"Other multilateral institution","multilateral"
-47080,"Other multilateral institution","multilateral"
-47081,"Other multilateral institution","multilateral"
-47082,"Other multilateral institution","multilateral"
-47084,"Other multilateral institution","multilateral"
-47086,"Other multilateral institution","multilateral"
-47087,"Other multilateral institution","multilateral"
-47092,"Other multilateral institution","multilateral"
-47093,"Other multilateral institution","multilateral"
-47095,"Other multilateral institution","multilateral"
-47097,"Other multilateral institution","multilateral"
-47098,"Other multilateral institution","multilateral"
-47100,"Other multilateral institution","multilateral"
-47105,"Other multilateral institution","multilateral"
-47106,"Other multilateral institution","multilateral"
-47109,"Other multilateral institution","multilateral"
-47110,"Other multilateral institution","multilateral"
-47112,"Other multilateral institution","multilateral"
-47113,"Other multilateral institution","multilateral"
-47116,"Other multilateral institution","multilateral"
-47117,"Other multilateral institution","multilateral"
-47118,"Other multilateral institution","multilateral"
-47119,"Other multilateral institution","multilateral"
-47120,"Other multilateral institution","multilateral"
-47121,"Other multilateral institution","multilateral"
-47123,"Other multilateral institution","multilateral"
-47127,"Other multilateral institution","multilateral"
-47132,"Other multilateral institution","multilateral"
-47137,"Other multilateral institution","multilateral"
-47139,"Other multilateral institution","multilateral"
-47140,"Other multilateral institution","multilateral"
-47141,"Other multilateral institution","multilateral"
-47142,"Other multilateral institution","multilateral"
-47143,"Other multilateral institution","multilateral"
-47145,"Other multilateral institution","multilateral"
-47501,"Other multilateral institution","multilateral"
-47502,"Other multilateral institution","multilateral"
-47503,"Other multilateral institution","multilateral"
-47504,"Other multilateral institution","multilateral"
-60000,"Private sector institution (type unspecified)","private-sector-institution"
-61001,"Donor private sector","private-sector-institution"
-61002,"Donor private sector","private-sector-institution"
-61003,"Donor private sector","private-sector-institution"
-61004,"Donor private sector","private-sector-institution"
-62001,"Recipient private sector","private-sector-institution"
-62002,"Recipient private sector","private-sector-institution"
-62003,"Recipient private sector","private-sector-institution"
-63001,"Third country private sector","private-sector-institution"
-63002,"Third country private sector","private-sector-institution"
-47008,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47020,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47041,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47053,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47054,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47055,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47057,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47063,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47071,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47099,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47101,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-47103,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-51001,"University, college or other teaching institution, research institute or think‑tank","university-research-institute-etc"
-21056,"Public-Private Partnership (PPP)","ppps-and-networks"
-30001,"Public-Private Partnership (PPP)","ppps-and-networks"
-30003,"Public-Private Partnership (PPP)","ppps-and-networks"
-30004,"Public-Private Partnership (PPP)","ppps-and-networks"
-30005,"Public-Private Partnership (PPP)","ppps-and-networks"
-30006,"Public-Private Partnership (PPP)","ppps-and-networks"
-30007,"Public-Private Partnership (PPP)","ppps-and-networks"
-30008,"Public-Private Partnership (PPP)","ppps-and-networks"
-30009,"Public-Private Partnership (PPP)","ppps-and-networks"
-30011,"Public-Private Partnership (PPP)","ppps-and-networks"
-31000,"Public-Private Partnership (PPP)","ppps-and-networks"
-32000,"Network","ppps-and-networks"
-21043,"Network","ppps-and-networks"
-21017,"Network","ppps-and-networks"
-31005,"Network","ppps-and-networks"
-47028,"Network","ppps-and-networks"
-30012,"Public-Private Partnership (PPP)","ppps-and-networks"
-30013,"Public-Private Partnership (PPP)","ppps-and-networks"
-30014,"Public-Private Partnership (PPP)","ppps-and-networks"
-30015,"Public-Private Partnership (PPP)","ppps-and-networks"
-30016,"Public-Private Partnership (PPP)","ppps-and-networks"
-30017,"Public-Private Partnership (PPP)","ppps-and-networks"
-31001,"Network","ppps-and-networks"
-31002,"Network","ppps-and-networks"
-31003,"Network","ppps-and-networks"
-31004,"Network","ppps-and-networks"
+oecd_crs_channel_code,itep_channel_name,itep_channel_web_id
+21000,International NGO,ngo-donor
+21016,International NGO,ngo-donor
+21018,International NGO,ngo-donor
+21020,International NGO,ngo-donor
+21023,International NGO,ngo-donor
+21029,International NGO,ngo-donor
+21032,International NGO,ngo-donor
+21034,International NGO,ngo-donor
+21045,International NGO,ngo-donor
+21062,International NGO,ngo-donor
+41000,United Nations,multilateral
+41101,United Nations,multilateral
+41103,United Nations,multilateral
+41104,United Nations,multilateral
+41105,United Nations,multilateral
+41106,United Nations,multilateral
+41107,United Nations,multilateral
+41108,United Nations,multilateral
+41110,United Nations,multilateral
+41111,United Nations,multilateral
+41112,United Nations,multilateral
+41114,United Nations,multilateral
+41116,United Nations,multilateral
+41119,United Nations,multilateral
+41120,United Nations,multilateral
+41121,United Nations,multilateral
+41122,United Nations,multilateral
+41123,United Nations,multilateral
+41125,United Nations,multilateral
+41126,United Nations,multilateral
+41127,United Nations,multilateral
+41128,United Nations,multilateral
+41129,United Nations,multilateral
+41130,United Nations,multilateral
+41131,United Nations,multilateral
+41132,United Nations,multilateral
+41134,United Nations,multilateral
+41135,United Nations,multilateral
+41136,United Nations,multilateral
+41137,United Nations,multilateral
+41138,United Nations,multilateral
+41140,United Nations,multilateral
+41141,United Nations,multilateral
+41142,United Nations,multilateral
+41143,United Nations,multilateral
+41144,United Nations,multilateral
+41145,United Nations,multilateral
+41146,United Nations,multilateral
+41147,United Nations,multilateral
+41148,United Nations,multilateral
+41301,United Nations,multilateral
+41302,United Nations,multilateral
+41303,United Nations,multilateral
+41304,United Nations,multilateral
+41305,United Nations,multilateral
+41306,United Nations,multilateral
+41307,United Nations,multilateral
+41308,United Nations,multilateral
+41309,United Nations,multilateral
+41310,United Nations,multilateral
+41311,United Nations,multilateral
+41312,United Nations,multilateral
+41313,United Nations,multilateral
+41314,United Nations,multilateral
+41315,United Nations,multilateral
+41316,United Nations,multilateral
+42000,European Union,multilateral
+42001,European Union,multilateral
+42002,Unknown,unspecified
+42003,European Union,multilateral
+42004,European Union,multilateral
+43000,International Monetary Fund,multilateral
+43001,International Monetary Fund,multilateral
+43002,International Monetary Fund,multilateral
+43003,International Monetary Fund,multilateral
+43004,International Monetary Fund,multilateral
+44000,World Bank Group,multilateral
+44001,World Bank Group,multilateral
+22000,Donor country based NGO,ngo-donor
+11000,Donor government,public-sector-donor
+20000,NGO and CSO (type unspecified),ngo-unknown
+10000,Public sector (unspecified whether donor or recipient),public-sector-unknown
+12000,Recipient government,public-sector-recipient
+13000,Third country government,public-sector-unknown
+30010,Other multilateral institution,multilateral
+41109,United Nations,multilateral
+41124,United Nations,multilateral
+41317,Other multilateral institution,multilateral
+30000,Public-Private Partnerships (PPPs) and Networks,ppps-and-networks
+44002,World Bank Group,multilateral
+44003,World Bank Group,multilateral
+44004,World Bank Group,multilateral
+44005,World Bank Group,multilateral
+44006,World Bank Group,multilateral
+44007,World Bank Group,multilateral
+45000,World Trade Organisation,multilateral
+45001,World Trade Organisation,multilateral
+45002,World Trade Organisation,multilateral
+45003,World Trade Organisation,multilateral
+46000,Regional Development Bank,multilateral
+46002,Regional Development Bank,multilateral
+46003,Regional Development Bank,multilateral
+46004,Regional Development Bank,multilateral
+46005,Regional Development Bank,multilateral
+46006,Regional Development Bank,multilateral
+46007,Regional Development Bank,multilateral
+46008,Regional Development Bank,multilateral
+46009,Regional Development Bank,multilateral
+46012,Regional Development Bank,multilateral
+46013,Regional Development Bank,multilateral
+46015,Regional Development Bank,multilateral
+46016,Regional Development Bank,multilateral
+46017,Regional Development Bank,multilateral
+46018,Regional Development Bank,multilateral
+46019,Regional Development Bank,multilateral
+46020,Regional Development Bank,multilateral
+46021,Regional Development Bank,multilateral
+46022,Regional Development Bank,multilateral
+46023,Regional Development Bank,multilateral
+46024,Regional Development Bank,multilateral
+47000,Other multilateral institution,multilateral
+47003,Other multilateral institution,multilateral
+47005,Other multilateral institution,multilateral
+47011,Other multilateral institution,multilateral
+47015,Other multilateral institution,multilateral
+47031,Unknown,unspecified
+47034,Other multilateral institution,multilateral
+47044,Other multilateral institution,multilateral
+47045,Other multilateral institution,multilateral
+47046,Other multilateral institution,multilateral
+47049,Unknown,unspecified
+47066,Other multilateral institution,multilateral
+47078,Other multilateral institution,multilateral
+47079,Other multilateral institution,multilateral
+47083,Other multilateral institution,multilateral
+47089,Other multilateral institution,multilateral
+47094,Unknown,unspecified
+47096,Other multilateral institution,multilateral
+47107,Other multilateral institution,multilateral
+47108,Unknown,unspecified
+47122,Other multilateral institution,multilateral
+47128,Other multilateral institution,multilateral
+47129,Other multilateral institution,multilateral
+47130,Other multilateral institution,multilateral
+47131,Other multilateral institution,multilateral
+47134,Other multilateral institution,multilateral
+47135,Other multilateral institution,multilateral
+47136,Other multilateral institution,multilateral
+47138,Other multilateral institution,multilateral
+52000,Other,other
+41318,United Nations,multilateral
+43005,International Monetary Fund,multilateral
+43006,International Monetary Fund,multilateral
+47111,Other multilateral institution,multilateral
+47144,Other multilateral institution,multilateral
+47102,Other multilateral institution,multilateral
+90000,Other,other
+61000,Donor private sector,private-sector-institution
+62000,Recipient private sector,private-sector-institution
+63000,Third country private sector,private-sector-institution
+23000,Developing country based NGO,ngo-recipient
+12001,Recipient government,public-sector-recipient
+12002,Recipient government,public-sector-recipient
+12003,Recipient government,public-sector-recipient
+47010,Network,ppps-and-networks
+47014,Other multilateral institution,multilateral
+50000,Other,other
+47017,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47018,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47021,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47035,International NGO,ngo-donor
+47043,Public-Private Partnership (PPP),ppps-and-networks
+47051,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47056,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47062,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47069,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47070,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47075,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47104,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+51000,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47004,Other multilateral institution,multilateral
+11001,Donor government,public-sector-donor
+11002,Donor government,public-sector-donor
+11003,Donor government,public-sector-donor
+11004,Donor government,public-sector-donor
+40000,Multilateral organisation (type unspecified),multilateral
+12004,Recipient government,public-sector-recipient
+21001,International NGO,ngo-donor
+21002,Other multilateral institution,multilateral
+21003,Developing country based NGO,ngo-recipient
+21004,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+21005,International NGO,ngo-donor
+21006,Donor country based NGO,ngo-donor
+21007,International NGO,ngo-donor
+21008,Donor country based NGO,ngo-donor
+21009,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+21010,Developing country based NGO,ngo-recipient
+21011,International NGO,ngo-donor
+21013,International NGO,ngo-donor
+21014,Donor country based NGO,ngo-donor
+21015,Donor country based NGO,ngo-donor
+21019,Donor country based NGO,ngo-donor
+21021,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+21022,International NGO,ngo-donor
+21024,International NGO,ngo-donor
+21025,Donor country based NGO,ngo-donor
+21026,Donor country based NGO,ngo-donor
+21027,Donor country based NGO,ngo-donor
+21028,Developing country based NGO,ngo-recipient
+21030,Developing country based NGO,ngo-recipient
+21031,International NGO,ngo-donor
+21033,Donor country based NGO,ngo-donor
+21035,Donor country based NGO,ngo-donor
+21036,International NGO,ngo-donor
+21037,Donor country based NGO,ngo-donor
+21038,International NGO,ngo-donor
+21039,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+21040,Donor country based NGO,ngo-donor
+21041,International NGO,ngo-donor
+21042,International NGO,ngo-donor
+21044,International NGO,ngo-donor
+21046,International NGO,ngo-donor
+21047,Donor country based NGO,ngo-donor
+21048,Developing country based NGO,ngo-recipient
+21049,Donor country based NGO,ngo-donor
+21050,Donor country based NGO,ngo-donor
+21051,Developing country based NGO,ngo-recipient
+21053,International NGO,ngo-donor
+21054,International NGO,ngo-donor
+21055,Developing country based NGO,ngo-recipient
+21057,International NGO,ngo-donor
+21058,Donor country based NGO,ngo-donor
+21059,Developing country based NGO,ngo-recipient
+21060,Donor country based NGO,ngo-donor
+21061,International NGO,ngo-donor
+21063,International NGO,ngo-donor
+21501,International NGO,ngo-donor
+21502,International NGO,ngo-donor
+21503,International NGO,ngo-donor
+21504,International NGO,ngo-donor
+21505,International NGO,ngo-donor
+21506,International NGO,ngo-donor
+21507,International NGO,ngo-donor
+22501,Donor country based NGO,ngo-donor
+22502,Donor country based NGO,ngo-donor
+23501,Developing country based NGO,ngo-recipient
+41102,United Nations,multilateral
+41133,United Nations,multilateral
+41319,United Nations,multilateral
+41501,United Nations,multilateral
+41502,United Nations,multilateral
+41503,United Nations,multilateral
+46025,Regional Development Bank,multilateral
+46026,Regional Development Bank,multilateral
+47001,Other multilateral institution,multilateral
+47002,Other multilateral institution,multilateral
+47009,Other multilateral institution,multilateral
+47012,Other multilateral institution,multilateral
+47013,Other multilateral institution,multilateral
+47019,Other multilateral institution,multilateral
+47022,Other multilateral institution,multilateral
+47025,Other multilateral institution,multilateral
+47026,Other multilateral institution,multilateral
+47027,Other multilateral institution,multilateral
+47029,Other multilateral institution,multilateral
+47036,Other multilateral institution,multilateral
+47037,Other multilateral institution,multilateral
+47040,Other multilateral institution,multilateral
+47042,Donor country based NGO,ngo-donor
+47047,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47050,Other multilateral institution,multilateral
+47058,Other multilateral institution,multilateral
+47059,Other multilateral institution,multilateral
+47061,Other multilateral institution,multilateral
+47064,Other multilateral institution,multilateral
+47065,Other multilateral institution,multilateral
+47067,Other multilateral institution,multilateral
+47068,Other multilateral institution,multilateral
+47073,Other multilateral institution,multilateral
+47074,Other multilateral institution,multilateral
+47076,Other multilateral institution,multilateral
+47077,Other multilateral institution,multilateral
+47080,Other multilateral institution,multilateral
+47081,Other multilateral institution,multilateral
+47082,Other multilateral institution,multilateral
+47084,Other multilateral institution,multilateral
+47086,Other multilateral institution,multilateral
+47087,Other multilateral institution,multilateral
+47092,Other multilateral institution,multilateral
+47093,Other multilateral institution,multilateral
+47095,Other multilateral institution,multilateral
+47097,Other multilateral institution,multilateral
+47098,Other multilateral institution,multilateral
+47100,Other multilateral institution,multilateral
+47105,Other multilateral institution,multilateral
+47106,Other multilateral institution,multilateral
+47109,Other multilateral institution,multilateral
+47110,Other multilateral institution,multilateral
+47112,Other multilateral institution,multilateral
+47113,Other multilateral institution,multilateral
+47116,Other multilateral institution,multilateral
+47117,Other multilateral institution,multilateral
+47118,Other multilateral institution,multilateral
+47119,Other multilateral institution,multilateral
+47120,Other multilateral institution,multilateral
+47121,Other multilateral institution,multilateral
+47123,Other multilateral institution,multilateral
+47127,Other multilateral institution,multilateral
+47132,Other multilateral institution,multilateral
+47137,Other multilateral institution,multilateral
+47139,Other multilateral institution,multilateral
+47140,Other multilateral institution,multilateral
+47141,Other multilateral institution,multilateral
+47142,Other multilateral institution,multilateral
+47143,Other multilateral institution,multilateral
+47145,Other multilateral institution,multilateral
+47501,Other multilateral institution,multilateral
+47502,Other multilateral institution,multilateral
+47503,Other multilateral institution,multilateral
+47504,Other multilateral institution,multilateral
+60000,Private sector institution (type unspecified),private-sector-institution
+61001,Donor private sector,private-sector-institution
+61002,Donor private sector,private-sector-institution
+61003,Donor private sector,private-sector-institution
+61004,Donor private sector,private-sector-institution
+62001,Recipient private sector,private-sector-institution
+62002,Recipient private sector,private-sector-institution
+62003,Recipient private sector,private-sector-institution
+63001,Third country private sector,private-sector-institution
+63002,Third country private sector,private-sector-institution
+47008,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47020,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47041,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47053,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47054,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47055,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47057,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47063,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47071,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47099,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47101,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+47103,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+51001,"University, college or other teaching institution, research institute or think‑tank",university-research-institute-etc
+21056,Public-Private Partnership (PPP),ppps-and-networks
+30001,Public-Private Partnership (PPP),ppps-and-networks
+30003,Public-Private Partnership (PPP),ppps-and-networks
+30004,Public-Private Partnership (PPP),ppps-and-networks
+30005,Public-Private Partnership (PPP),ppps-and-networks
+30006,Public-Private Partnership (PPP),ppps-and-networks
+30007,Public-Private Partnership (PPP),ppps-and-networks
+30008,Public-Private Partnership (PPP),ppps-and-networks
+30009,Public-Private Partnership (PPP),ppps-and-networks
+30011,Public-Private Partnership (PPP),ppps-and-networks
+31000,Public-Private Partnership (PPP),ppps-and-networks
+32000,Network,ppps-and-networks
+21043,Network,ppps-and-networks
+21017,Network,ppps-and-networks
+31005,Network,ppps-and-networks
+47028,Network,ppps-and-networks
+30012,Public-Private Partnership (PPP),ppps-and-networks
+30013,Public-Private Partnership (PPP),ppps-and-networks
+30014,Public-Private Partnership (PPP),ppps-and-networks
+30015,Public-Private Partnership (PPP),ppps-and-networks
+30016,Public-Private Partnership (PPP),ppps-and-networks
+30017,Public-Private Partnership (PPP),ppps-and-networks
+31001,Network,ppps-and-networks
+31002,Network,ppps-and-networks
+31003,Network,ppps-and-networks
+31004,Network,ppps-and-networks
+61009,Private sector institution,private-sector-institution
+62009,Private sector institution,private-sector-institution
+63009,Private sector institution,private-sector-institution
+61008,Private sector institution,private-sector-institution
+61007,Private sector institution,private-sector-institution
+61010,Private sector institution,private-sector-institution
+63003,Private sector institution,private-sector-institution
+62007,Private sector institution,private-sector-institution
+31006,Public private partnership or network,ppps-and-networks
+62005,Private sector institution,private-sector-institution

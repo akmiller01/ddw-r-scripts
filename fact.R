@@ -168,7 +168,7 @@ oda_filter$oda_donor_bundle[which((grepl(description_g,oda_filter$long_descripti
                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'G'
 
 # Bundle Code C
-description_g <-' vaccin| vacci| non-food | nonfood | non alimentaire '
+description_g <-' vaccin| non-food | nonfood | non alimentaire '
 
 
 # Check for purpose code, short_description and long_description
@@ -185,12 +185,12 @@ oda_filter$channel_code[which(as.character(oda_filter$channel_code) %like%  chan
 save(oda_filter, file="output/oda_filter.RData")
 # load("output/oda_filter.RData")
 
-names(channel_code_5_web_map) = c("channel_code","itep_channel_name","itep_channel_web_id")
-channel_code_5_web_map$itep_channel_web_id = NULL
-oda_filter = merge(oda_filter,channel_code_5_web_map, by="channel_code")
+names(channel_code_5_web_map)[1] = "channel_code"
+channel_code_5_web_map$itep_channel_name = NULL
+oda_filter = merge(oda_filter,channel_code_5_web_map, by="channel_code",all.x=T)
 
 names(sector_3_code_map) = c("sector_code","itep_sector_name")
-oda_filter = merge(oda_filter,sector_3_code_map, by="sector_code")
+oda_filter = merge(oda_filter,sector_3_code_map, by="sector_code",all.x=T)
 
 oda_tab = oda_filter[,.(
   usd_disbursement_deflated=sum(usd_disbursement_deflated,na.rm=T),
@@ -202,7 +202,7 @@ oda_tab = oda_filter[,.(
     recipient_name,
     itep_sector_name,
     oda_donor_bundle,
-    itep_channel_name
+    itep_channel_web_id
   )]
 
 bundle_map = c("Cash (loans/equity)","Cash grants", "Commodities and food", "GPGs and NNGOs", "Mixed project aid", "Non-transfer", "Technical cooperation")
