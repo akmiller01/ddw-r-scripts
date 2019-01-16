@@ -210,5 +210,6 @@ names(bundle_map) = c("A","B","C","D","E","F","G")
 
 oda_tab$bundle_name = bundle_map[oda_tab$oda_donor_bundle]
 oda_tab$oda_donor_bundle = NULL
+oda_tab$itep_channel_web_id[which(is.na(oda_tab$itep_channel_web_id))] = "unspecified"
 
 fwrite(oda_tab,"output/bundle_test.csv")
