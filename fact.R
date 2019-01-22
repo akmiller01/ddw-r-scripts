@@ -127,7 +127,7 @@ oda_filter$oda_donor_bundle[which(as.character(oda_filter$channel_code) %like%  
 # Bundle Code B
 
 donor_code_v <- c(901,905,906,907,909,912,913,914,915,916,921,951,953,958,976,990,1013)
-description_g <- ' finance | fund | subsidy | financement | fonds | subsidie '
+description_g <- 'finance| fund |subsidy|financement|fonds|subsidie'
 swp <- ' SWAP '
 
 space = function(x){
@@ -152,14 +152,14 @@ oda_filter$oda_donor_bundle[which(( grepl(swp,oda_filter$long_description,ignore
 
 
 # Bundle Code D
-long_description_g <- ' research'
+long_description_g <- 'research'
 # grep %research% and recipient code 998
 
 oda_filter$oda_donor_bundle[which(grepl(long_description_g,oda_filter$long_description,ignore.case  = TRUE, useBytes = TRUE) & oda_filter$recipient_code == 9998 & 
                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'D'
 
 # Bundle G
-description_g <- ' consultancy | consultant | technical assistance | technical cooperation | training '
+description_g <- 'consultancy|consultant|technical assistance|technical cooperation|training'
 
 
 #Search for the occurrences of short_description and long_description
@@ -168,7 +168,7 @@ oda_filter$oda_donor_bundle[which((grepl(description_g,oda_filter$long_descripti
                                     oda_filter$oda_donor_bundle %!in% ignore_bundle_code)] <- 'G'
 
 # Bundle Code C
-description_g <-' vaccin| non-food | nonfood | non alimentaire '
+description_g <-'vaccin|non-food|nonfood|non alimentaire'
 
 
 # Check for purpose code, short_description and long_description
@@ -183,7 +183,7 @@ oda_filter$channel_code[which(as.character(oda_filter$channel_code) %like%  chan
                               & oda_filter$oda_donor_bundle %!in% ignore_bundle_code)]
 
 save(oda_filter, file="output/oda_filter.RData")
-# load("output/oda_filter.RData")
+#  load("output/oda_filter.RData")
 
 names(channel_code_5_web_map)[1] = "channel_code"
 channel_code_5_web_map$itep_channel_name = NULL
@@ -202,7 +202,8 @@ oda_tab = oda_filter[,.(
     recipient_name,
     itep_sector_name,
     oda_donor_bundle,
-    itep_channel_web_id
+    itep_channel_web_id,
+    year
   )]
 
 bundle_map = c("Cash (loans/equity)","Cash grants", "Commodities and food", "GPGs and NNGOs", "Mixed project aid", "Non-transfer", "Technical cooperation")
