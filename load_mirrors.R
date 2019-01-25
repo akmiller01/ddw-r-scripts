@@ -15,9 +15,6 @@ dac2b_path <- "~/ddw_update/data_source/oecd_dac_table_2b/Table2b_Data.csv"
 dac5_path <- "~/ddw_update/data_source/oecd_dac_table_5/Table5_Data.csv"
 dac1_path <- "~/ddw_update/data_source/oecd_dac_table_1/Table1_Data.csv"
 
-
-release <- '2019_01_09'#format(Sys.time(), "%Y_%m_%d")
-
 #This cannot point to a file, we will be working with several files
 #Checking header lengths, invalid characters and missing data content
 
