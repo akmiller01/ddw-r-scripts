@@ -1,0 +1,33 @@
+# The default configs go here. The defaults are used for any parameter that's absent in the respective config.
+default:
+    base_year: 2016
+    current_year: 2018
+    wb_data_start_year: 1960
+    wd: ~/git/ddw-r-scripts
+    crs_path: ~/ddw_update/data_source/oecd_dac_crs
+    ddw_update_path: ~/ddw_update
+    dac2a_path: ~/ddw_update/data_source/oecd_dac_table_2a/Table2a_Data.csv
+    dac2b_path: ~/ddw_update/data_source/oecd_dac_table_2b/Table2b_Data.csv
+    dac5_path: ~/ddw_update/data_source/oecd_dac_table_5/Table5_Data.csv
+    dac1_path: ~/ddw_update/data_source/oecd_dac_table_1/Table1_Data.csv
+    release: 2019_01_09
+    imf_data_url: https://www.imf.org/external/pubs/ft/weo/2018/01/weodata/WEOApr2018all.xls
+    m_url: https://webfs.oecd.org/crs-iati-xml/Lookup/DAC-CRS-CODES.xml
+    digital_platform: ~/git/digital-platform/user-data/
+    download_folder: ~/devinit/downloads/
+    write_folder: ~/devinit/write/
+    concepts1: https://raw.githubusercontent.com/devinit/datahub-cms/master/country-profile/concept.csv
+    concepts2: https://raw.githubusercontent.com/devinit/datahub-cms/master/spotlight-uganda/concept.csv
+    concepts3: https://raw.githubusercontent.com/devinit/datahub-cms/master/unbundling-oof/concept.csv
+    concepts4: https://raw.githubusercontent.com/devinit/datahub-cms/master/unbundling-oda/concept.csv
+    concepts5: https://raw.githubusercontent.com/devinit/datahub-cms/master/where-the-poor/concept.csv
+    concepts6: https://raw.githubusercontent.com/devinit/datahub-cms/master/bubble-chart-oda/concept.csv
+    concepts7: https://raw.githubusercontent.com/devinit/datahub-cms/master/bubble-chart-poverty/concept.csv
+    concepts8: https://raw.githubusercontent.com/devinit/datahub-cms/master/spotlight-kenya/concept.csv
+    concepts9: https://raw.githubusercontent.com/devinit/datahub-cms/master/global-picture/concept.csv
+
+
+# The override configs go here for specific installations. Always leave the defaults and only modify / change the specifics
+production:
+    #base_year: 2014
+
