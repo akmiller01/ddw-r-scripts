@@ -4,7 +4,7 @@ if(length(new.packages)) install.packages(new.packages)
 
 require(RPostgreSQL)
 
-cred <- readLines("ddw.txt")
+cred <- readLines("ddw.txt", warn = FALSE)
 
 drv <- dbDriver("PostgreSQL")
 con <- dbConnect(drv

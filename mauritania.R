@@ -1,23 +1,24 @@
 library(data.table)
 
-setwd("~/git/ddw-r-scripts")
+source("load_configs.R")
+setwd(configs$wd)
 source("connect.R")
 
-setwd("~")
+setwd(configs$download_folder)
 
 all.entities <- ddw("reference.di_entity")
 all.entities <- all.entities[c("id","name")]
 names(all.entities) <- c("di_id","entity_name")
 
-concepts1 <- read.csv("https://raw.githubusercontent.com/devinit/datahub-cms/master/country-profile/concept.csv")
-concepts2 <- read.csv("https://raw.githubusercontent.com/devinit/datahub-cms/master/spotlight-uganda/concept.csv")
-concepts3 <- read.csv("https://raw.githubusercontent.com/devinit/datahub-cms/master/unbundling-oof/concept.csv")
-concepts4 <- read.csv("https://raw.githubusercontent.com/devinit/datahub-cms/master/unbundling-oda/concept.csv")
-concepts5 <- read.csv("https://raw.githubusercontent.com/devinit/datahub-cms/master/where-the-poor/concept.csv")
-concepts6 <- read.csv("https://raw.githubusercontent.com/devinit/datahub-cms/master/bubble-chart-oda/concept.csv")
-concepts7 <- read.csv("https://raw.githubusercontent.com/devinit/datahub-cms/master/bubble-chart-poverty/concept.csv")
-concepts8 <- read.csv("https://raw.githubusercontent.com/devinit/datahub-cms/master/spotlight-kenya/concept.csv")
-concepts9 <- read.csv("https://raw.githubusercontent.com/devinit/datahub-cms/master/global-picture/concept.csv")
+concepts1 <- read.csv(configs$concepts1)
+concepts2 <- read.csv(configs$concepts2)
+concepts3 <- read.csv(configs$concepts3)
+concepts4 <- read.csv(configs$concepts4)
+concepts5 <- read.csv(configs$concepts5)
+concepts6 <- read.csv(configs$concepts6)
+concepts7 <- read.csv(configs$concepts7)
+concepts8 <- read.csv(configs$concepts8)
+concepts9 <- read.csv(configs$concepts9)
 
 concepts.list = list(
   concepts1,

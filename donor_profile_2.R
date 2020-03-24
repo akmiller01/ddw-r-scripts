@@ -6,8 +6,13 @@ lapply(list.of.packages, require, character.only=T)
 
 source('connect.R')
 
-wd='/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts'
-setwd(wd)
+# wd='/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts'
+#wd='~/git/ddw-r-scripts'
+source("load_configs.R")
+base_year <- configs$base_year
+current_year <- configs$current_year
+wb_data_start_year <- configs$wb_data_start_year
+setwd(configs$wd)
 
 donor_bilateral <- read.csv(file="output/donor_profile.disbursements_by_region_bilateral.csv",na.strings = "")
 donor_bilateral$donor_code <- NULL

@@ -3,10 +3,16 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
 
-wd='/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts'
-setwd(wd)
+# wd='/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts'
+source("load_configs.R")
+base_year <- configs$base_year
+current_year <- configs$current_year
+wb_data_start_year <- configs$wb_data_start_year
+
+# wd='~/git/ddw-r-scripts'
+setwd(configs$wd)
 #This file can only be processed after fact table has been processed successfully
-source("baseYearConstants.R")
+#source("baseYearConstants.R")
 source("connect.R")
 
 # You will need to obtain the DAC regional and unspecified total

@@ -4,6 +4,7 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
 
+source("load_configs.R")
 download_oecd_zip = function(table_name, zip_location){
   download_url = paste0("https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=",table_name)
   data_root = "https://stats.oecd.org/FileView2.aspx?IDFile="
@@ -35,17 +36,17 @@ download_oecd_zip = function(table_name, zip_location){
   }
 }
 
-dac2a_path <- "~/ddw_update/data_source/oecd_dac_table_2a"
+dac2a_path <- paste0(configs$ddw_update_path, "/data_source/oecd_dac_table_2a")
 download_oecd_zip("TABLE2A",dac2a_path)
 
-dac2b_path <- "~/ddw_update/data_source/oecd_dac_table_2b"
+dac2b_path <- paste0(configs$ddw_update_path, "data_source/oecd_dac_table_2b")
 download_oecd_zip("TABLE2B",dac2b_path)
 
-dac5_path <- "~/ddw_update/data_source/oecd_dac_table_5"
+dac5_path <- paste0(configs$ddw_update_path, "/data_source/oecd_dac_table_5")
 download_oecd_zip("TABLE5",dac5_path)
 
-dac1_path <- "~/ddw_update/data_source/oecd_dac_table_1"
+dac1_path <- paste0(configs$ddw_update_path, "/data_source/oecd_dac_table_1")
 download_oecd_zip("TABLE1",dac1_path)
 
-crs1_path <- "~/ddw_update/data_source/oecd_dac_crs"
+crs1_path <- paste0(configs$ddw_update_path, "/data_source/oecd_dac_crs")
 download_oecd_zip("CRS1",crs1_path)

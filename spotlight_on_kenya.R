@@ -6,12 +6,17 @@ lapply(list.of.packages, require, character.only=T)
 library("xlsx")
 
 
-rawfolder <- "/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts/sok_raw/"
-outputfolder <- "/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts/output_sok/"
-sok_folder <- '/Users/boss/Dev_Musings/devinit/spotlight_on_kenya/Naphlin'
+source("load_configs.R")
+base_year <- configs$base_year
+current_year <- configs$current_year
+wb_data_start_year <- configs$wb_data_start_year
+
+rawfolder <- paste0(configs$wd, "/sok/sok_raw/")
+outputfolder <- paste0(configs$wd, "/sok/output_sok/")
+sok_folder <- paste0(configs$wd, "/sok")
   
-setwd("/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts");
-source("baseYearConstants.R")
+setwd(configs$wd);
+# source("baseYearConstants.R")
 #source("connect.R")
 
 setwd(rawfolder)

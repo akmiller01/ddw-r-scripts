@@ -4,15 +4,19 @@ if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
 
 
-wd='~/git/ddw-r-scripts'
+source("load_configs.R")
+# wd='~/git/ddw-r-scripts'
+wd = configs$wd
 setwd(wd)
+
+crs <- fread(paste0(configs$ddw_update_path,'/mirrors/crs_mirror.csv'),na.strings="")
 
 #Get only oda from crs
 #Filters that will be used to get only ODA
 flow_code_v <- c(11,13,19)
 category_v <- 10
 
-oda_filter <- crs[flow_code %in% flow_code_v & category == category_v & !is.na(usd_disbursement) & usd_disbursement != 0]
+oda_filter <- crs[crs$flow_code %in% flow_code_v & crs$category == category_v & !is.na(crs$usd_disbursement) & crs$usd_disbursement != 0]
 oda_filter$total_desc = paste(oda_filter$short_description, oda_filter$long_description)
 
 

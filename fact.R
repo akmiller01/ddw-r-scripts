@@ -4,15 +4,19 @@ if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
 
 
-wd='~/git/ddw-r-scripts'
+source("load_configs.R")
+base_year <- configs$base_year
+current_year <- configs$current_year
+wb_data_start_year <- configs$wb_data_start_year
+wd=configs$wd
 setwd(wd)
 #This file can only be processed after fact table has been processed successfully
-source("baseYearConstants.R")
+#source("baseYearConstants.R")
 #source("connect.R")
 
 #Load oecd_crs data set that will be manipulated
 
-crs <- fread('~/ddw_update/mirrors/crs_mirror.csv',na.strings="")
+crs <- fread(paste0(configs$ddw_update_path, 'mirrors/crs_mirror.csv'),na.strings="")
 
 
 #donor_map <- ddw('dimension.oecd_donor_to_di_id_map');

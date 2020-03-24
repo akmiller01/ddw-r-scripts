@@ -1,6 +1,7 @@
 library('XML')
 
-m_url <- 'https://webfs.oecd.org/crs-iati-xml/Lookup/DAC-CRS-CODES.xml'
+source("load_configs.R")
+m_url <- configs$m_url
 
 con <- url(m_url)
 codes <- readLines(con)

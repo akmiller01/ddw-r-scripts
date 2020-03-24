@@ -4,14 +4,16 @@ if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
 
 # Change WD to git repo if needed
-wd = "~/git/ddw-r-scripts"
-setwd(wd)
+source("load_configs.R")
+# wd = "~/git/ddw-r-scripts"
+setwd(configs$wd)
 
 # Set base_year here
-base_year = 2016
+base_year = configs$base_year
 
 # Load data, removing na strings
-data_url = "https://www.imf.org/external/pubs/ft/weo/2018/01/weodata/WEOApr2018all.xls"
+# data_url = "https://www.imf.org/external/pubs/ft/weo/2018/01/weodata/WEOApr2018all.xls"
+data_url = configs$imf_data_url
 weo = read.csv(data_url,sep="\t",na.strings=c("","n/a","--"))
 
 # Set our desired indicators with nice names

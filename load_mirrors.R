@@ -3,25 +3,29 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only=T)
 
-source("baseYearConstants.R")
+source("load_configs.R")
+base_year <- configs$base_year
+current_year <- configs$current_year
+wb_data_start_year <- configs$wb_data_start_year
 #Load dac2a mirror data from source data
 #Path to row downloaded data 
 #Make sure all files are already extracted
-wd <- "~/ddw_update/"
+#wd <- "~/ddw_update/"
+wd <- configs$ddw_update
 setwd(wd)
 
-dac2a_path <- "~/ddw_update/data_source/oecd_dac_table_2a/Table2a_Data.csv"
-dac2b_path <- "~/ddw_update/data_source/oecd_dac_table_2b/Table2b_Data.csv"
-dac5_path <- "~/ddw_update/data_source/oecd_dac_table_5/Table5_Data.csv"
-dac1_path <- "~/ddw_update/data_source/oecd_dac_table_1/Table1_Data.csv"
+dac2a_path <- configs$dac2a_path
+dac2b_path <- configs$dac2b_path
+dac5_path <- configs$dac5_path
+dac1_path <- configs$dac1_path
 
 
-release <- '2019_01_09'#format(Sys.time(), "%Y_%m_%d")
+release <- configs$release #format(Sys.time(), "%Y_%m_%d")
 
 #This cannot point to a file, we will be working with several files
 #Checking header lengths, invalid characters and missing data content
 
-crs_path <- "~/ddw_update/data_source/oecd_dac_crs"
+crs_path <- configs$crs_path
 
 clean_dac2a_file = function(){
   
@@ -463,7 +467,7 @@ load_crs_mirror_to_postgres = function(){
   
   
   #Create database oecd_crs_mirror_tmp and create in it schema crs
-  setwd('~/git/ddw-r-scripts')
+  setwd(configs$wd)
   create_schema_script <- paste0(getwd(),'/shell-scripts/crs-to-postgres/create.crs.schema.and.grant.privilege.to.user.sh')
   system(paste0(create_schema_script,' oecd_crs_mirror'))
   
@@ -518,7 +522,7 @@ load_dac1_to_postgres <- function(){
 load_dac2a_to_postgres <- function(){
   encoding <- 'LATIN9'
   max_year <- current_year +1
-  mirror_path <- "~/ddw_update/mirrors/dac2a.csv"
+  mirror_path <- paste0(configs$ddw_update_path, "/mirrors/dac2a.csv")
   load_command <- paste0(getwd(),'/shell-scripts/dac2a-to-postgres/create.table.table.2a.data.sh ',release,' ',encoding,' ',max_year,' ',mirror_path)
   
   system(load_command)
@@ -528,7 +532,7 @@ load_dac2a_to_postgres <- function(){
 load_dac2b_to_postgres <- function(){
   encoding <- 'LATIN9'
   max_year <- current_year +1
-  mirror_path <- "~/ddw_update/mirrors/dac2b.csv"
+  mirror_path <- paste0(configs$ddw_update_path, "/mirrors/dac2b.csv")
   load_command <- paste0(getwd(),'/shell-scripts/dac2b-to-postgres/create.table.table.2b.data.sh ',release,' ',encoding,' ',max_year,' ',mirror_path)
   
   system(load_command)
@@ -538,7 +542,7 @@ load_dac2b_to_postgres <- function(){
 load_dac5_to_postgres <- function(){
   encoding <- 'LATIN9'
   max_year <- current_year +1
-  mirror_path <- "~/ddw_update/mirrors/dac5.csv"
+  mirror_path <- paste0(configs$ddw_update_path, "/mirrors/dac5.csv")
   load_command <- paste0(getwd(),'/shell-scripts/dac5-to-postgres/create.table.table.5.data.sh ',release,' ',encoding,' ',max_year,' ',mirror_path)
   
   system(load_command)

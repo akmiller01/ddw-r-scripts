@@ -11,14 +11,17 @@ lapply(list.of.packages, require, character.only=T)
 # postgres_port
 # postgres_user_pass
 # postgres_db_name
+source("load_configs.R")
+base_year <- configs$base_year
+current_year <- configs$current_year
+wb_data_start_year <- configs$wb_data_start_year
 
-wd <- '/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts/'
-message(wd)
-#"~/git/ddw-r-scripts"
-setwd(wd)
+# wd <- '/Users/boss/Dev_Musings/devinit/ddw_update/rscripts/ddw-r-scripts/'
+# message(wd)
+#wd <- "~/git/ddw-r-scripts"
+setwd(configs$wd)
 
 source("connect.R")
-source("baseYearConstants.R")
 source("ReadWBIndicators.R")
 
 # Pull in id mappings and deflators. Performing merges to append di_id to the deflator
